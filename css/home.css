@@ -10,14 +10,27 @@
   transition: opacity 0.65s ease, transform 0.65s ease;
 }
 .reveal-up    { transform: translateY(40px); }
-.reveal-left  { transform: translateX(-50px); }
-.reveal-right { transform: translateX(50px); }
+/* Clamp reveal-left/right to prevent horizontal scroll */
+.reveal-left  { transform: translateX(-40px); }
+.reveal-right { transform: translateX(40px); }
 
 .reveal-up.in-view,
 .reveal-left.in-view,
 .reveal-right.in-view {
   opacity: 1;
   transform: translate(0, 0);
+}
+
+/* Clip any section that might overflow horizontally */
+.home-about,
+.home-industries,
+.home-why,
+.home-vm,
+.home-cta,
+.enquiry-section,
+.panel-supply,
+.section {
+  overflow-x: hidden;
 }
 
 
