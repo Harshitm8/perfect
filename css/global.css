@@ -53,6 +53,7 @@
 html {
   scroll-behavior: smooth;
   font-size: 17px;
+  overflow-x: hidden;
 }
 
 body {
@@ -62,6 +63,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 em, i { font-style: normal; }

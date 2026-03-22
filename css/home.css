@@ -26,7 +26,7 @@
 ══════════════════════════════════════════════════════════════ */
 .hero {
   position: relative;
-  z-index: 0;           /* ← keeps hero's internal z-index stack BELOW navbar/drawer */
+  z-index: 0;
   height: 110vh;
   min-height: 700px;
   display: flex;
@@ -34,6 +34,7 @@
   justify-content: center;
   overflow: hidden;
   background: #1a7aaa;
+  max-width: 100%;
 }
 .hero-slides { position: absolute; inset: 0; }
 .hero-slide {
