@@ -646,6 +646,12 @@
   font-size: 0.88rem;
   color: var(--text-mid, #1a5040);
   line-height: 1.6;
+  flex-wrap: wrap;
+}
+
+.vm-points li strong {
+  flex-shrink: 0;
+  min-width: 130px;
 }
 .vm-points li::before {
   content: '→';
