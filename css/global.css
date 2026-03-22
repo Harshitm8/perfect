@@ -10,6 +10,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  min-width: 0;
 }
 
 /* ── Root tokens ── */
@@ -53,7 +54,7 @@
 html {
   scroll-behavior: smooth;
   font-size: 17px;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -63,7 +64,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
 }
 
@@ -225,7 +226,7 @@ button { font: inherit; cursor: pointer; }
 .site-footer::after {
   content: '';
   position: absolute;
-  top: 0; left: -5%; right: -5%;
+  top: 0; left: 0; right: 0;
   height: 45px;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 45'%3E%3Cpath fill='%23061215' fill-opacity='0.45' d='M0,15 C360,45 720,0 1080,20 C1260,30 1350,10 1440,15 L1440,0 L0,0 Z'/%3E%3C/svg%3E") no-repeat top center / cover;
   pointer-events: none;
