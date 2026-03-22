@@ -1,0 +1,100 @@
+.quote-page{
+padding:80px 0;
+background: #f2faff;
+}
+
+.quote-header{
+text-align:center;
+margin-bottom:40px;
+}
+
+.quote-title{
+font-family:var(--font-serif);
+font-size:40px;
+margin-bottom:10px;
+}
+
+.quote-sub{
+color:var(--text-light);
+max-width:500px;
+margin:auto;
+}
+
+.quote-card{
+background: #ffffff;
+padding:40px;
+border-radius:20px;
+box-shadow: 0 15px 40px rgba(90,200,232,0.12);
+max-width:900px;
+margin:auto;
+}
+
+.grid-2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+.field{
+display:flex;
+flex-direction:column;
+gap:6px;
+margin-bottom:18px;
+}
+
+.field label{
+font-size:13px;
+font-weight:600;
+color:var(--text-dark);
+}
+
+.field input,
+.field select,
+.field textarea{
+padding:12px 14px;
+border-radius:8px;
+border:1px solid #ddd;
+font-size:14px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+outline:none;
+border-color: #5ac8e8;
+}
+
+.captcha-row{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:20px;
+}
+
+#captchaText{
+font-weight:bold;
+font-size:18px;
+letter-spacing:2px;
+}
+
+.submit-btn{
+background: #2a9abf;
+color:white;
+padding:12px 28px;
+border:none;
+border-radius:8px;
+font-size:15px;
+cursor:pointer;
+}
+
+.submit-btn:hover{
+background: #1a88bb;
+}
+
+@media(max-width:700px){
+
+.grid-2{
+grid-template-columns:1fr;
+}
+
+}
