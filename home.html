@@ -9,8 +9,74 @@
   <link rel="stylesheet" href="css/global.css"/>
   <link rel="stylesheet" href="css/navbar.css"/>
   <link rel="stylesheet" href="css/home.css"/>
+  <style>
+    /* ── Custom Country Picker ── */
+    .phone-wrap { display: flex; gap: 8px; align-items: stretch; }
+    .country-picker { position: relative; flex-shrink: 0; }
+    .cp-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      height: 100%; min-height: 44px; padding: 0 10px;
+      border: 1.5px solid rgba(90,200,232,0.35); border-radius: 10px;
+      background: #f5fafd; cursor: pointer; font-family: inherit;
+      font-size: 0.85rem; font-weight: 700; color: #0d2a1a;
+      white-space: nowrap; transition: border-color 0.2s, background 0.2s;
+    }
+    .cp-btn:hover, .country-picker.open .cp-btn { border-color: #5ac8e8; background: #fff; }
+    .cp-flag { font-size: 1.1rem; line-height: 1; }
+    .cp-code { font-size: 0.82rem; font-weight: 700; color: #1a5040; }
+    .cp-arrow { font-size: 0.55rem; opacity: 0.5; transition: transform 0.2s; }
+    .country-picker.open .cp-arrow { transform: rotate(180deg); }
+    .cp-dropdown {
+      position: absolute; top: calc(100% + 6px); left: 0; width: 300px;
+      background: #fff; border: 1px solid rgba(90,200,232,0.22); border-radius: 14px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.13), 0 4px 14px rgba(42,154,191,0.10);
+      overflow: hidden; opacity: 0; visibility: hidden;
+      transform: translateY(6px) scale(0.98); transform-origin: top left;
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s; z-index: 9999;
+    }
+    .country-picker.open .cp-dropdown { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .cp-search-wrap { padding: 10px 10px 7px; border-bottom: 1px solid rgba(90,200,232,0.12); }
+    .cp-search {
+      width: 100%; padding: 7px 10px 7px 30px;
+      border: 1.5px solid rgba(90,200,232,0.22); border-radius: 8px;
+      font-family: inherit; font-size: 0.80rem; color: #0d2a1a; outline: none;
+      background: #f5fafd url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%235ac8e8' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 9px center;
+      transition: border-color 0.2s;
+    }
+    .cp-search::placeholder { color: #aac8d8; }
+    .cp-search:focus { border-color: #5ac8e8; background-color: #fff; }
+    .cp-list { max-height: 260px; overflow-y: auto; padding: 5px 0; scrollbar-width: thin; scrollbar-color: rgba(90,200,232,0.28) transparent; }
+    .cp-list::-webkit-scrollbar { width: 4px; }
+    .cp-list::-webkit-scrollbar-thumb { background: rgba(90,200,232,0.32); border-radius: 4px; }
+    .cp-group-label { font-size: 0.60rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: #5ac8e8; padding: 8px 12px 3px; opacity: 0.8; }
+    .cp-item { display: flex; align-items: center; gap: 9px; width: 100%; padding: 7px 12px; background: none; border: none; cursor: pointer; text-align: left; transition: background 0.13s; }
+    .cp-item:hover { background: rgba(90,200,232,0.09); }
+    .cp-item.active { background: rgba(42,154,191,0.08); }
+    .cp-item-flag { font-size: 1.1rem; line-height: 1; flex-shrink: 0; width: 22px; text-align: center; }
+    .cp-item-name { font-size: 0.84rem; font-weight: 500; color: #0d2a1a; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cp-item.active .cp-item-name { color: #1a7aaa; font-weight: 700; }
+    .cp-item-code { font-size: 0.70rem; font-weight: 700; color: #5ac8e8; background: rgba(90,200,232,0.11); padding: 2px 5px; border-radius: 4px; flex-shrink: 0; font-family: monospace; }
+    .cp-item.active .cp-item-code { background: rgba(42,154,191,0.14); color: #1a7aaa; }
+    .cp-item.active::after { content: "\2713"; font-size: 0.72rem; color: #2a9abf; }
+    .cp-item[hidden] { display: none; }
+    .cp-no-results { padding: 14px 12px; font-size: 0.82rem; color: #aac8d8; text-align: center; }
+    /* Hide Google Translate toolbar & banner */
+    .goog-te-banner-frame, .goog-te-balloon-frame { display: none !important; }
+    .goog-te-gadget { display: none !important; }
+    body { top: 0 !important; }
+    #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+  </style>
 </head>
 <body>
+
+<!-- Google Translate (hidden) -->
+<div id="google_translate_element" style="display:none"></div>
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({ pageLanguage: "en", autoDisplay: false }, "google_translate_element");
+  }
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <!-- ░░ NAVBAR ░░ -->
 <nav class="nav" id="nav">
@@ -36,29 +102,16 @@
     </ul>
     <!-- Language Switcher -->
     <div class="nav-lang" id="navLang">
-      <button class="nav-lang-btn" id="langBtn" aria-label="Select language">
-        <span class="nav-lang-flag" id="langFlag">🇮🇳</span>
-        <span id="langCurrent">EN</span>
-        <span class="nav-lang-arrow">▼</span>
+      <button class="nav-lang-btn" id="langBtn" aria-label="Select language" aria-haspopup="listbox" aria-expanded="false">
+        <span class="nav-lang-flag" id="langFlag">🇬🇧</span>
+        <span id="langCurrent">English</span>
+        <span class="nav-lang-arrow">▾</span>
       </button>
-      <div class="nav-lang-dropdown" id="langDropdown">
+      <div class="nav-lang-dropdown" id="langDropdown" role="listbox">
         <div class="lang-search-wrap">
           <input class="lang-search" id="langSearch" type="text" placeholder="Search language…" autocomplete="off"/>
         </div>
-        <div class="lang-options-scroll" id="langOptionsScroll">
-        <div class="lang-group">
-          <div class="lang-group-label">🇮🇳 Indian Languages</div>
-          <button class="lang-option active" data-lang="en" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">English</span><span class="lang-option-code">EN</span></button>
-          <button class="lang-option" data-lang="hi" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">हिन्दी</span><span class="lang-option-code">HI</span></button>
-          <button class="lang-option" data-lang="pa" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">ਪੰਜਾਬੀ</span><span class="lang-option-code">PA</span></button>
-          <button class="lang-option" data-lang="th" data-flag="🇹🇭"><span class="lang-option-flag">🇹🇭</span><span class="lang-option-name">ภาษาไทย</span><span class="lang-option-code">TH</span></button>
-          <button class="lang-option" data-lang="ar" data-flag="🇸🇦"><span class="lang-option-flag">🇸🇦</span><span class="lang-option-name">العربية</span><span class="lang-option-code">AR</span></button>
-          <button class="lang-option" data-lang="fr" data-flag="🇫🇷"><span class="lang-option-flag">🇫🇷</span><span class="lang-option-name">Français</span><span class="lang-option-code">FR</span></button>
-          <button class="lang-option" data-lang="de" data-flag="🇩🇪"><span class="lang-option-flag">🇩🇪</span><span class="lang-option-name">Deutsch</span><span class="lang-option-code">DE</span></button>
-          <button class="lang-option" data-lang="es" data-flag="🇪🇸"><span class="lang-option-flag">🇪🇸</span><span class="lang-option-name">Español</span><span class="lang-option-code">ES</span></button>
-          <button class="lang-option" data-lang="zh-CN" data-flag="🇨🇳"><span class="lang-option-flag">🇨🇳</span><span class="lang-option-name">中文</span><span class="lang-option-code">ZH</span></button>
-        </div>
-        </div>
+        <div class="lang-options-scroll" id="langOptionsScroll"></div>
       </div>
     </div>
     <a href="#enquiry" class="nav-cta">Get a Quote <span class="cta-arrow">→</span></a>
@@ -432,7 +485,7 @@
         </div>
         <div class="eq-contact-item">
           <span class="eq-icon">&#9993;&#65039;</span>
-          <span><a href="mailto:info@indothaiglobal.com">info@indothaiglobal.com</a></span>
+          <span><a href="/cdn-cgi/l/email-protection#244d4a424b644d4a404b504c454d43484b4645480a474b49"><span class="__cf_email__" data-cfemail="d2bbbcb4bd92bbbcb6bda6bab3bbb5bebdb0b3befcb1bdbf">[email&#160;protected]</span></a></span>
         </div>
         <div class="eq-contact-item">
           <span class="eq-icon">&#128205;</span>
@@ -467,29 +520,23 @@
         <div class="form-field">
           <label for="eq-phone">Phone Number <span class="req">*</span></label>
           <div class="phone-wrap">
-            <select id="eq-country" class="country-select" aria-label="Country code">
-              <option value="+91">🇮🇳 +91</option>
-              <option value="+1">🇺🇸 +1</option>
-              <option value="+44">🇬🇧 +44</option>
-              <option value="+61">🇦🇺 +61</option>
-              <option value="+971">🇦🇪 +971</option>
-              <option value="+966">🇸🇦 +966</option>
-              <option value="+65">🇸🇬 +65</option>
-              <option value="+60">🇲🇾 +60</option>
-              <option value="+66">🇹🇭 +66</option>
-              <option value="+880">🇧🇩 +880</option>
-              <option value="+92">🇵🇰 +92</option>
-              <option value="+94">🇱🇰 +94</option>
-              <option value="+977">🇳🇵 +977</option>
-              <option value="+49">🇩🇪 +49</option>
-              <option value="+33">🇫🇷 +33</option>
-              <option value="+81">🇯🇵 +81</option>
-              <option value="+86">🇨🇳 +86</option>
-              <option value="+27">🇿🇦 +27</option>
-              <option value="+234">🇳🇬 +234</option>
-              <option value="+254">🇰🇪 +254</option>
-            </select>
-            <input type="tel" id="eq-phone" placeholder="XXXXX XXXXX" required/>
+            <!-- Hidden real input for form submission -->
+            <input type="hidden" id="eq-country-val" value="+91"/>
+            <!-- Custom country picker -->
+            <div class="country-picker" id="countryPicker">
+              <button type="button" class="cp-btn" id="cpBtn" aria-haspopup="listbox" aria-expanded="false">
+                <span class="cp-flag" id="cpFlag">🇮🇳</span>
+                <span class="cp-code" id="cpCode">+91</span>
+                <span class="cp-arrow">▾</span>
+              </button>
+              <div class="cp-dropdown" id="cpDropdown" role="listbox">
+                <div class="cp-search-wrap">
+                  <input class="cp-search" id="cpSearch" type="text" placeholder="Search country or code…" autocomplete="off"/>
+                </div>
+                <div class="cp-list" id="cpList"></div>
+              </div>
+            </div>
+                        <input type="tel" id="eq-phone" placeholder="XXXXX XXXXX" required/>
           </div>
         </div>
 
@@ -538,7 +585,7 @@
     <div class="footer-col">
       <h4 class="footer-title">Contact</h4>
       <div class="footer-contact-item">&#128222; +91 76579-44044</div>
-      <div class="footer-contact-item">&#9993;&#65039; info@indothaiglobal.com</div>
+      <div class="footer-contact-item">&#9993;&#65039; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fc95929a93bc9592989388949d959b90939e9d90d29f9391">[email&#160;protected]</a></div>
       <div class="footer-contact-item">&#128205; Ludhiana, Punjab, India</div>
     </div>
 
@@ -554,6 +601,323 @@
   </div>
 </footer>
 
+
+<script>
+(function () {
+  var COUNTRIES = [
+    // Popular
+    {f:'🇮🇳', n:'India',                  c:'+91',   pop:true},
+    {f:'🇺🇸', n:'United States',           c:'+1',    pop:true},
+    {f:'🇬🇧', n:'United Kingdom',          c:'+44',   pop:true},
+    {f:'🇦🇪', n:'United Arab Emirates',    c:'+971',  pop:true},
+    {f:'🇹🇭', n:'Thailand',                c:'+66',   pop:true},
+    {f:'🇸🇬', n:'Singapore',               c:'+65',   pop:true},
+    {f:'🇦🇺', n:'Australia',               c:'+61',   pop:true},
+    // All
+    {f:'🇦🇫', n:'Afghanistan',             c:'+93'},
+    {f:'🇦🇱', n:'Albania',                 c:'+355'},
+    {f:'🇩🇿', n:'Algeria',                 c:'+213'},
+    {f:'🇦🇩', n:'Andorra',                 c:'+376'},
+    {f:'🇦🇴', n:'Angola',                  c:'+244'},
+    {f:'🇦🇬', n:'Antigua and Barbuda',     c:'+1268'},
+    {f:'🇦🇷', n:'Argentina',               c:'+54'},
+    {f:'🇦🇲', n:'Armenia',                 c:'+374'},
+    {f:'🇦🇹', n:'Austria',                 c:'+43'},
+    {f:'🇦🇿', n:'Azerbaijan',              c:'+994'},
+    {f:'🇧🇸', n:'Bahamas',                 c:'+1242'},
+    {f:'🇧🇭', n:'Bahrain',                 c:'+973'},
+    {f:'🇧🇩', n:'Bangladesh',              c:'+880'},
+    {f:'🇧🇧', n:'Barbados',                c:'+1246'},
+    {f:'🇧🇾', n:'Belarus',                 c:'+375'},
+    {f:'🇧🇪', n:'Belgium',                 c:'+32'},
+    {f:'🇧🇿', n:'Belize',                  c:'+501'},
+    {f:'🇧🇯', n:'Benin',                   c:'+229'},
+    {f:'🇧🇹', n:'Bhutan',                  c:'+975'},
+    {f:'🇧🇴', n:'Bolivia',                 c:'+591'},
+    {f:'🇧🇦', n:'Bosnia and Herzegovina',  c:'+387'},
+    {f:'🇧🇼', n:'Botswana',                c:'+267'},
+    {f:'🇧🇷', n:'Brazil',                  c:'+55'},
+    {f:'🇧🇳', n:'Brunei',                  c:'+673'},
+    {f:'🇧🇬', n:'Bulgaria',                c:'+359'},
+    {f:'🇧🇫', n:'Burkina Faso',            c:'+226'},
+    {f:'🇧🇮', n:'Burundi',                 c:'+257'},
+    {f:'🇨🇻', n:'Cabo Verde',              c:'+238'},
+    {f:'🇰🇭', n:'Cambodia',                c:'+855'},
+    {f:'🇨🇲', n:'Cameroon',                c:'+237'},
+    {f:'🇨🇦', n:'Canada',                  c:'+1'},
+    {f:'🇨🇫', n:'Central African Republic',c:'+236'},
+    {f:'🇹🇩', n:'Chad',                    c:'+235'},
+    {f:'🇨🇱', n:'Chile',                   c:'+56'},
+    {f:'🇨🇳', n:'China',                   c:'+86'},
+    {f:'🇨🇴', n:'Colombia',                c:'+57'},
+    {f:'🇰🇲', n:'Comoros',                 c:'+269'},
+    {f:'🇨🇩', n:'Congo (DRC)',             c:'+243'},
+    {f:'🇨🇬', n:'Congo (Republic)',        c:'+242'},
+    {f:'🇨🇷', n:'Costa Rica',              c:'+506'},
+    {f:'🇭🇷', n:'Croatia',                 c:'+385'},
+    {f:'🇨🇺', n:'Cuba',                    c:'+53'},
+    {f:'🇨🇾', n:'Cyprus',                  c:'+357'},
+    {f:'🇨🇿', n:'Czech Republic',          c:'+420'},
+    {f:'🇩🇰', n:'Denmark',                 c:'+45'},
+    {f:'🇩🇯', n:'Djibouti',                c:'+253'},
+    {f:'🇩🇲', n:'Dominica',                c:'+1767'},
+    {f:'🇩🇴', n:'Dominican Republic',      c:'+1809'},
+    {f:'🇪🇨', n:'Ecuador',                 c:'+593'},
+    {f:'🇪🇬', n:'Egypt',                   c:'+20'},
+    {f:'🇸🇻', n:'El Salvador',             c:'+503'},
+    {f:'🇬🇶', n:'Equatorial Guinea',       c:'+240'},
+    {f:'🇪🇷', n:'Eritrea',                 c:'+291'},
+    {f:'🇪🇪', n:'Estonia',                 c:'+372'},
+    {f:'🇸🇿', n:'Eswatini',                c:'+268'},
+    {f:'🇪🇹', n:'Ethiopia',                c:'+251'},
+    {f:'🇫🇯', n:'Fiji',                    c:'+679'},
+    {f:'🇫🇮', n:'Finland',                 c:'+358'},
+    {f:'🇫🇷', n:'France',                  c:'+33'},
+    {f:'🇬🇦', n:'Gabon',                   c:'+241'},
+    {f:'🇬🇲', n:'Gambia',                  c:'+220'},
+    {f:'🇬🇪', n:'Georgia',                 c:'+995'},
+    {f:'🇩🇪', n:'Germany',                 c:'+49'},
+    {f:'🇬🇭', n:'Ghana',                   c:'+233'},
+    {f:'🇬🇷', n:'Greece',                  c:'+30'},
+    {f:'🇬🇩', n:'Grenada',                 c:'+1473'},
+    {f:'🇬🇹', n:'Guatemala',               c:'+502'},
+    {f:'🇬🇳', n:'Guinea',                  c:'+224'},
+    {f:'🇬🇼', n:'Guinea-Bissau',           c:'+245'},
+    {f:'🇬🇾', n:'Guyana',                  c:'+592'},
+    {f:'🇭🇹', n:'Haiti',                   c:'+509'},
+    {f:'🇭🇳', n:'Honduras',                c:'+504'},
+    {f:'🇭🇺', n:'Hungary',                 c:'+36'},
+    {f:'🇮🇸', n:'Iceland',                 c:'+354'},
+    {f:'🇮🇩', n:'Indonesia',               c:'+62'},
+    {f:'🇮🇷', n:'Iran',                    c:'+98'},
+    {f:'🇮🇶', n:'Iraq',                    c:'+964'},
+    {f:'🇮🇪', n:'Ireland',                 c:'+353'},
+    {f:'🇮🇱', n:'Israel',                  c:'+972'},
+    {f:'🇮🇹', n:'Italy',                   c:'+39'},
+    {f:'🇯🇲', n:'Jamaica',                 c:'+1876'},
+    {f:'🇯🇵', n:'Japan',                   c:'+81'},
+    {f:'🇯🇴', n:'Jordan',                  c:'+962'},
+    {f:'🇰🇿', n:'Kazakhstan',              c:'+7'},
+    {f:'🇰🇪', n:'Kenya',                   c:'+254'},
+    {f:'🇰🇮', n:'Kiribati',                c:'+686'},
+    {f:'🇽🇰', n:'Kosovo',                  c:'+383'},
+    {f:'🇰🇼', n:'Kuwait',                  c:'+965'},
+    {f:'🇰🇬', n:'Kyrgyzstan',              c:'+996'},
+    {f:'🇱🇦', n:'Laos',                    c:'+856'},
+    {f:'🇱🇻', n:'Latvia',                  c:'+371'},
+    {f:'🇱🇧', n:'Lebanon',                 c:'+961'},
+    {f:'🇱🇸', n:'Lesotho',                 c:'+266'},
+    {f:'🇱🇷', n:'Liberia',                 c:'+231'},
+    {f:'🇱🇾', n:'Libya',                   c:'+218'},
+    {f:'🇱🇮', n:'Liechtenstein',           c:'+423'},
+    {f:'🇱🇹', n:'Lithuania',               c:'+370'},
+    {f:'🇱🇺', n:'Luxembourg',              c:'+352'},
+    {f:'🇲🇬', n:'Madagascar',              c:'+261'},
+    {f:'🇲🇼', n:'Malawi',                  c:'+265'},
+    {f:'🇲🇾', n:'Malaysia',                c:'+60'},
+    {f:'🇲🇻', n:'Maldives',                c:'+960'},
+    {f:'🇲🇱', n:'Mali',                    c:'+223'},
+    {f:'🇲🇹', n:'Malta',                   c:'+356'},
+    {f:'🇲🇭', n:'Marshall Islands',        c:'+692'},
+    {f:'🇲🇷', n:'Mauritania',              c:'+222'},
+    {f:'🇲🇺', n:'Mauritius',               c:'+230'},
+    {f:'🇲🇽', n:'Mexico',                  c:'+52'},
+    {f:'🇫🇲', n:'Micronesia',              c:'+691'},
+    {f:'🇲🇩', n:'Moldova',                 c:'+373'},
+    {f:'🇲🇨', n:'Monaco',                  c:'+377'},
+    {f:'🇲🇳', n:'Mongolia',                c:'+976'},
+    {f:'🇲🇪', n:'Montenegro',              c:'+382'},
+    {f:'🇲🇦', n:'Morocco',                 c:'+212'},
+    {f:'🇲🇿', n:'Mozambique',              c:'+258'},
+    {f:'🇲🇲', n:'Myanmar',                 c:'+95'},
+    {f:'🇳🇦', n:'Namibia',                 c:'+264'},
+    {f:'🇳🇷', n:'Nauru',                   c:'+674'},
+    {f:'🇳🇵', n:'Nepal',                   c:'+977'},
+    {f:'🇳🇱', n:'Netherlands',             c:'+31'},
+    {f:'🇳🇿', n:'New Zealand',             c:'+64'},
+    {f:'🇳🇮', n:'Nicaragua',               c:'+505'},
+    {f:'🇳🇪', n:'Niger',                   c:'+227'},
+    {f:'🇳🇬', n:'Nigeria',                 c:'+234'},
+    {f:'🇲🇰', n:'North Macedonia',         c:'+389'},
+    {f:'🇳🇴', n:'Norway',                  c:'+47'},
+    {f:'🇴🇲', n:'Oman',                    c:'+968'},
+    {f:'🇵🇰', n:'Pakistan',                c:'+92'},
+    {f:'🇵🇼', n:'Palau',                   c:'+680'},
+    {f:'🇵🇸', n:'Palestine',               c:'+970'},
+    {f:'🇵🇦', n:'Panama',                  c:'+507'},
+    {f:'🇵🇬', n:'Papua New Guinea',        c:'+675'},
+    {f:'🇵🇾', n:'Paraguay',                c:'+595'},
+    {f:'🇵🇪', n:'Peru',                    c:'+51'},
+    {f:'🇵🇭', n:'Philippines',             c:'+63'},
+    {f:'🇵🇱', n:'Poland',                  c:'+48'},
+    {f:'🇵🇹', n:'Portugal',                c:'+351'},
+    {f:'🇶🇦', n:'Qatar',                   c:'+974'},
+    {f:'🇷🇴', n:'Romania',                 c:'+40'},
+    {f:'🇷🇺', n:'Russia',                  c:'+7'},
+    {f:'🇷🇼', n:'Rwanda',                  c:'+250'},
+    {f:'🇰🇳', n:'Saint Kitts and Nevis',   c:'+1869'},
+    {f:'🇱🇨', n:'Saint Lucia',             c:'+1758'},
+    {f:'🇻🇨', n:'Saint Vincent',           c:'+1784'},
+    {f:'🇼🇸', n:'Samoa',                   c:'+685'},
+    {f:'🇸🇲', n:'San Marino',              c:'+378'},
+    {f:'🇸🇹', n:'Sao Tome and Principe',   c:'+239'},
+    {f:'🇸🇦', n:'Saudi Arabia',            c:'+966'},
+    {f:'🇸🇳', n:'Senegal',                 c:'+221'},
+    {f:'🇷🇸', n:'Serbia',                  c:'+381'},
+    {f:'🇸🇨', n:'Seychelles',              c:'+248'},
+    {f:'🇸🇱', n:'Sierra Leone',            c:'+232'},
+    {f:'🇸🇰', n:'Slovakia',                c:'+421'},
+    {f:'🇸🇮', n:'Slovenia',                c:'+386'},
+    {f:'🇸🇧', n:'Solomon Islands',         c:'+677'},
+    {f:'🇸🇴', n:'Somalia',                 c:'+252'},
+    {f:'🇿🇦', n:'South Africa',            c:'+27'},
+    {f:'🇸🇸', n:'South Sudan',             c:'+211'},
+    {f:'🇪🇸', n:'Spain',                   c:'+34'},
+    {f:'🇱🇰', n:'Sri Lanka',               c:'+94'},
+    {f:'🇸🇩', n:'Sudan',                   c:'+249'},
+    {f:'🇸🇷', n:'Suriname',                c:'+597'},
+    {f:'🇸🇪', n:'Sweden',                  c:'+46'},
+    {f:'🇨🇭', n:'Switzerland',             c:'+41'},
+    {f:'🇸🇾', n:'Syria',                   c:'+963'},
+    {f:'🇹🇼', n:'Taiwan',                  c:'+886'},
+    {f:'🇹🇯', n:'Tajikistan',              c:'+992'},
+    {f:'🇹🇿', n:'Tanzania',                c:'+255'},
+    {f:'🇹🇱', n:'Timor-Leste',             c:'+670'},
+    {f:'🇹🇬', n:'Togo',                    c:'+228'},
+    {f:'🇹🇴', n:'Tonga',                   c:'+676'},
+    {f:'🇹🇹', n:'Trinidad and Tobago',     c:'+1868'},
+    {f:'🇹🇳', n:'Tunisia',                 c:'+216'},
+    {f:'🇹🇷', n:'Turkey',                  c:'+90'},
+    {f:'🇹🇲', n:'Turkmenistan',            c:'+993'},
+    {f:'🇹🇻', n:'Tuvalu',                  c:'+688'},
+    {f:'🇺🇬', n:'Uganda',                  c:'+256'},
+    {f:'🇺🇦', n:'Ukraine',                 c:'+380'},
+    {f:'🇺🇾', n:'Uruguay',                 c:'+598'},
+    {f:'🇺🇿', n:'Uzbekistan',              c:'+998'},
+    {f:'🇻🇺', n:'Vanuatu',                 c:'+678'},
+    {f:'🇻🇦', n:'Vatican City',            c:'+379'},
+    {f:'🇻🇪', n:'Venezuela',               c:'+58'},
+    {f:'🇻🇳', n:'Vietnam',                 c:'+84'},
+    {f:'🇾🇪', n:'Yemen',                   c:'+967'},
+    {f:'🇿🇲', n:'Zambia',                  c:'+260'},
+    {f:'🇿🇼', n:'Zimbabwe',                c:'+263'}
+  ];
+
+  var picker   = document.getElementById('countryPicker');
+  var cpBtn    = document.getElementById('cpBtn');
+  var cpFlag   = document.getElementById('cpFlag');
+  var cpCode   = document.getElementById('cpCode');
+  var cpSearch = document.getElementById('cpSearch');
+  var cpList   = document.getElementById('cpList');
+  var hidden   = document.getElementById('eq-country-val');
+  if (!picker || !cpBtn || !cpList) return;
+
+  /* Build list */
+  function buildList() {
+    cpList.innerHTML = '';
+
+    var popLabel = document.createElement('div');
+    popLabel.className = 'cp-group-label';
+    popLabel.textContent = '⭐ Popular';
+    cpList.appendChild(popLabel);
+
+    COUNTRIES.forEach(function(ct, idx) {
+      if (ct.pop) cpList.appendChild(makeItem(ct, idx));
+    });
+
+    var allLabel = document.createElement('div');
+    allLabel.className = 'cp-group-label';
+    allLabel.textContent = '🌍 All Countries';
+    cpList.appendChild(allLabel);
+
+    COUNTRIES.forEach(function(ct, idx) {
+      if (!ct.pop) cpList.appendChild(makeItem(ct, idx));
+    });
+  }
+
+  function makeItem(ct, idx) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'cp-item' + (ct.c === '+91' && ct.n === 'India' ? ' active' : '');
+    btn.setAttribute('data-name', ct.n.toLowerCase());
+    btn.setAttribute('data-code', ct.c);
+    btn.innerHTML =
+      '<span class="cp-item-flag">' + ct.f + '</span>' +
+      '<span class="cp-item-name">' + ct.n + '</span>' +
+      '<span class="cp-item-code">' + ct.c + '</span>';
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      select(ct);
+    });
+    return btn;
+  }
+
+  function select(ct) {
+    cpFlag.textContent = ct.f;
+    cpCode.textContent = ct.c;
+    if (hidden) hidden.value = ct.c;
+    cpList.querySelectorAll('.cp-item').forEach(function(el) { el.classList.remove('active'); });
+    cpList.querySelectorAll('.cp-item').forEach(function(el) {
+      if (el.getAttribute('data-name') === ct.n.toLowerCase() && el.getAttribute('data-code') === ct.c) {
+        el.classList.add('active');
+      }
+    });
+    picker.classList.remove('open');
+    cpBtn.setAttribute('aria-expanded', 'false');
+    if (cpSearch) { cpSearch.value = ''; filterList(''); }
+  }
+
+  function filterList(q) {
+    q = q.toLowerCase().trim();
+    var items = cpList.querySelectorAll('.cp-item');
+    var noResults = cpList.querySelector('.cp-no-results');
+    var visible = 0;
+    items.forEach(function(el) {
+      var name = el.getAttribute('data-name') || '';
+      var code = el.getAttribute('data-code') || '';
+      var show = !q || name.indexOf(q) !== -1 || code.indexOf(q) !== -1;
+      el.hidden = !show;
+      if (show) visible++;
+    });
+    /* hide group labels when searching */
+    cpList.querySelectorAll('.cp-group-label').forEach(function(lbl) {
+      lbl.hidden = !!q;
+    });
+    if (!noResults) {
+      noResults = document.createElement('div');
+      noResults.className = 'cp-no-results';
+      noResults.textContent = 'No countries found';
+      cpList.appendChild(noResults);
+    }
+    noResults.hidden = visible > 0;
+  }
+
+  /* Toggle */
+  cpBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var isOpen = picker.classList.toggle('open');
+    cpBtn.setAttribute('aria-expanded', String(isOpen));
+    if (isOpen && cpSearch) setTimeout(function() { cpSearch.focus(); }, 60);
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!picker.contains(e.target)) {
+      picker.classList.remove('open');
+      cpBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') { picker.classList.remove('open'); cpBtn.setAttribute('aria-expanded','false'); }
+  });
+
+  if (cpSearch) {
+    cpSearch.addEventListener('input', function() { filterList(this.value); });
+  }
+
+  buildList();
+})();
+</script>
 <script src="js/navbar.js"></script>
 <script src="js/home.js"></script>
 </body>
