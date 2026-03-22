@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Request Quote — Indo Thai Global</title>
+  <link rel="icon" href="assets/logo.png" type="image/png"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <style>
+    .page-hero {
+      background: linear-gradient(160deg, #0f1d09 0%, #182d1b 100%);
+      padding: clamp(5rem,9vw,7rem) 0 clamp(3rem,5vw,4rem);
+      position: relative; overflow: hidden;
+    }
+    .page-hero::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 55% at 80% 40%, rgba(200,122,16,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .page-hero-inner { position: relative; z-index: 1; }
+    .page-hero-label {
+      font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--amber); margin-bottom: 0.8rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .page-hero-label::before { content: ''; display: block; width: 22px; height: 1px; background: var(--amber); opacity: 0.5; }
+    .page-hero-title {
+      font-family: var(--font-serif); font-size: clamp(2.4rem,5vw,3.8rem);
+      font-weight: 600; color: #fff; line-height: 1.08; margin-bottom: 0.8rem;
+    }
+    .page-hero-title em {
+      font-style: italic;
+      background: linear-gradient(108deg, #7dd65a 0%, #f5c842 50%, #f5893a 100%);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .page-hero-sub { font-size: 0.96rem; color: rgba(255,255,255,0.5); max-width: 520px; line-height: 1.75; }
+
+    /* quote body */
+    .quote-body { padding: clamp(4rem,7vw,6rem) 0; background: var(--off-white); }
+    .quote-inner { display: grid; grid-template-columns: 1fr 1.8fr; gap: 5rem; align-items: start; }
+    .quote-left { position: sticky; top: 90px; }
+
+    .quote-left-title { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.5rem; }
+    .quote-left-title em {
+      font-style: italic;
+      background: linear-gradient(108deg, var(--green) 0%, var(--amber) 100%);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .quote-left-sub { font-size: 0.9rem; color: var(--text-mid); line-height: 1.7; max-width: 260px; }
+
+    /* form card */
+    .quote-card {
+      background: var(--white);
+      border-radius: var(--r-lg);
+      padding: clamp(2rem,4vw,2.8rem);
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.05);
+    }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 1rem; }
+    .form-field label { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-light); }
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      padding: 0.72rem 1rem; border-radius: var(--r-sm);
+      border: 1px solid var(--border-strong);
+      background: var(--off-white); font-family: var(--font-sans);
+      font-size: 0.9rem; color: var(--text-dark); outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(200,122,16,0.09);
+      background: var(--white);
+    }
+    .form-field textarea { resize: vertical; min-height: 110px; }
+
+    .captcha-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 0.9rem 1rem;
+      background: var(--off-white);
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border);
+      margin-bottom: 1.2rem;
+    }
+    #captchaText {
+      font-family: var(--font-mono); font-weight: 500;
+      font-size: 1.1rem; letter-spacing: 0.18em;
+      color: var(--text-dark);
+      background: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(160,120,40,0.04) 2px, rgba(160,120,40,0.04) 4px);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      user-select: none;
+    }
+    .captcha-input {
+      flex: 1; padding: 0.5rem 0.8rem;
+      border-radius: var(--r-sm); border: 1px solid var(--border-strong);
+      font-family: var(--font-mono); font-size: 0.9rem; outline: none;
+    }
+    .captcha-input:focus { border-color: var(--amber); }
+
+    @media (max-width: 800px) {
+      .quote-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      .quote-left { position: static; }
+      .form-grid-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-accent"></div>
+  <div class="nav-progress" id="navProgress"></div>
+  <div class="nav-inner">
+    <a href="home.html" class="nav-brand">
+      <img src="assets/logo.png" alt="Indo Thai Global" class="nav-logo"/>
+      <div class="nav-brand-words">
+        <span class="nav-brand-name">Indo Thai Global</span>
+        <span class="nav-brand-tag">Est. 2005 &middot; India</span>
+      </div>
+    </a>
+    <div class="nav-divider"></div>
+    <ul class="nav-links">
+      <li><a href="home.html"          class="nav-link">Home</a></li>
+      <li><a href="products.html"       class="nav-link">Products</a></li>
+      <li><a href="infrastructure.html" class="nav-link">Infrastructure</a></li>
+      <li><a href="quality.html"        class="nav-link">Quality</a></li>
+      <li><a href="about.html"          class="nav-link">About</a></li>
+      <li><a href="contact.html"        class="nav-link">Contact</a></li>
+    </ul>
+    <!-- Language Switcher -->
+    <div class="nav-lang" id="navLang">
+      <button class="nav-lang-btn" id="langBtn" aria-label="Select language">
+        <span class="nav-lang-flag" id="langFlag">🇮🇳</span>
+        <span id="langCurrent">EN</span>
+        <span class="nav-lang-arrow">▼</span>
+      </button>
+      <div class="nav-lang-dropdown" id="langDropdown">
+        <div class="lang-search-wrap">
+          <input class="lang-search" id="langSearch" type="text" placeholder="Search language…" autocomplete="off"/>
+        </div>
+        <div class="lang-options-scroll" id="langOptionsScroll">
+        <div class="lang-group">
+          <div class="lang-group-label">🇮🇳 Indian Languages</div>
+          <button class="lang-option active" data-lang="en" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">English</span><span class="lang-option-code">EN</span></button>
+          <button class="lang-option" data-lang="hi" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">हिन्दी</span><span class="lang-option-code">HI</span></button>
+          <button class="lang-option" data-lang="pa" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">ਪੰਜਾਬੀ</span><span class="lang-option-code">PA</span></button>
+          <button class="lang-option" data-lang="bn" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">বাংলা</span><span class="lang-option-code">BN</span></button>
+          <button class="lang-option" data-lang="te" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">తెలుగు</span><span class="lang-option-code">TE</span></button>
+          <button class="lang-option" data-lang="mr" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">मराठी</span><span class="lang-option-code">MR</span></button>
+          <button class="lang-option" data-lang="ta" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">தமிழ்</span><span class="lang-option-code">TA</span></button>
+          <button class="lang-option" data-lang="gu" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">ગુજરાતી</span><span class="lang-option-code">GU</span></button>
+          <button class="lang-option" data-lang="kn" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">ಕನ್ನಡ</span><span class="lang-option-code">KN</span></button>
+          <button class="lang-option" data-lang="ml" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">മലയാളം</span><span class="lang-option-code">ML</span></button>
+          <button class="lang-option" data-lang="ur" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">اردو</span><span class="lang-option-code">UR</span></button>
+          <button class="lang-option" data-lang="or" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">ଓଡ଼ିଆ</span><span class="lang-option-code">OR</span></button>
+          <button class="lang-option" data-lang="as" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">অসমীয়া</span><span class="lang-option-code">AS</span></button>
+          <button class="lang-option" data-lang="ne" data-flag="🇳🇵"><span class="lang-option-flag">🇳🇵</span><span class="lang-option-name">नेपाली</span><span class="lang-option-code">NE</span></button>
+          <button class="lang-option" data-lang="si" data-flag="🇱🇰"><span class="lang-option-flag">🇱🇰</span><span class="lang-option-name">සිංහල</span><span class="lang-option-code">SI</span></button>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-label">🌏 Asian Languages</div>
+          <button class="lang-option" data-lang="th" data-flag="🇹🇭"><span class="lang-option-flag">🇹🇭</span><span class="lang-option-name">ภาษาไทย</span><span class="lang-option-code">TH</span></button>
+          <button class="lang-option" data-lang="vi" data-flag="🇻🇳"><span class="lang-option-flag">🇻🇳</span><span class="lang-option-name">Tiếng Việt</span><span class="lang-option-code">VI</span></button>
+          <button class="lang-option" data-lang="id" data-flag="🇮🇩"><span class="lang-option-flag">🇮🇩</span><span class="lang-option-name">Bahasa Indonesia</span><span class="lang-option-code">ID</span></button>
+          <button class="lang-option" data-lang="ms" data-flag="🇲🇾"><span class="lang-option-flag">🇲🇾</span><span class="lang-option-name">Bahasa Melayu</span><span class="lang-option-code">MS</span></button>
+          <button class="lang-option" data-lang="tl" data-flag="🇵🇭"><span class="lang-option-flag">🇵🇭</span><span class="lang-option-name">Filipino</span><span class="lang-option-code">TL</span></button>
+          <button class="lang-option" data-lang="my" data-flag="🇲🇲"><span class="lang-option-flag">🇲🇲</span><span class="lang-option-name">မြန်မာဘာသာ</span><span class="lang-option-code">MY</span></button>
+          <button class="lang-option" data-lang="km" data-flag="🇰🇭"><span class="lang-option-flag">🇰🇭</span><span class="lang-option-name">ភាសាខ្មែរ</span><span class="lang-option-code">KM</span></button>
+          <button class="lang-option" data-lang="lo" data-flag="🇱🇦"><span class="lang-option-flag">🇱🇦</span><span class="lang-option-name">ພາສາລາວ</span><span class="lang-option-code">LO</span></button>
+          <button class="lang-option" data-lang="zh-CN" data-flag="🇨🇳"><span class="lang-option-flag">🇨🇳</span><span class="lang-option-name">中文 (简体)</span><span class="lang-option-code">ZH</span></button>
+          <button class="lang-option" data-lang="zh-TW" data-flag="🇹🇼"><span class="lang-option-flag">🇹🇼</span><span class="lang-option-name">中文 (繁體)</span><span class="lang-option-code">TW</span></button>
+          <button class="lang-option" data-lang="ja" data-flag="🇯🇵"><span class="lang-option-flag">🇯🇵</span><span class="lang-option-name">日本語</span><span class="lang-option-code">JA</span></button>
+          <button class="lang-option" data-lang="ko" data-flag="🇰🇷"><span class="lang-option-flag">🇰🇷</span><span class="lang-option-name">한국어</span><span class="lang-option-code">KO</span></button>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-label">🌍 Middle East</div>
+          <button class="lang-option" data-lang="ar" data-flag="🇸🇦"><span class="lang-option-flag">🇸🇦</span><span class="lang-option-name">العربية</span><span class="lang-option-code">AR</span></button>
+          <button class="lang-option" data-lang="fa" data-flag="🇮🇷"><span class="lang-option-flag">🇮🇷</span><span class="lang-option-name">فارسی</span><span class="lang-option-code">FA</span></button>
+          <button class="lang-option" data-lang="tr" data-flag="🇹🇷"><span class="lang-option-flag">🇹🇷</span><span class="lang-option-name">Türkçe</span><span class="lang-option-code">TR</span></button>
+          <button class="lang-option" data-lang="he" data-flag="🇮🇱"><span class="lang-option-flag">🇮🇱</span><span class="lang-option-name">עברית</span><span class="lang-option-code">HE</span></button>
+          <button class="lang-option" data-lang="ku" data-flag="🇮🇶"><span class="lang-option-flag">🇮🇶</span><span class="lang-option-name">Kurdî</span><span class="lang-option-code">KU</span></button>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-label">🌍 European</div>
+          <button class="lang-option" data-lang="fr" data-flag="🇫🇷"><span class="lang-option-flag">🇫🇷</span><span class="lang-option-name">Français</span><span class="lang-option-code">FR</span></button>
+          <button class="lang-option" data-lang="de" data-flag="🇩🇪"><span class="lang-option-flag">🇩🇪</span><span class="lang-option-name">Deutsch</span><span class="lang-option-code">DE</span></button>
+          <button class="lang-option" data-lang="es" data-flag="🇪🇸"><span class="lang-option-flag">🇪🇸</span><span class="lang-option-name">Español</span><span class="lang-option-code">ES</span></button>
+          <button class="lang-option" data-lang="pt" data-flag="🇧🇷"><span class="lang-option-flag">🇧🇷</span><span class="lang-option-name">Português</span><span class="lang-option-code">PT</span></button>
+          <button class="lang-option" data-lang="it" data-flag="🇮🇹"><span class="lang-option-flag">🇮🇹</span><span class="lang-option-name">Italiano</span><span class="lang-option-code">IT</span></button>
+          <button class="lang-option" data-lang="ru" data-flag="🇷🇺"><span class="lang-option-flag">🇷🇺</span><span class="lang-option-name">Русский</span><span class="lang-option-code">RU</span></button>
+          <button class="lang-option" data-lang="nl" data-flag="🇳🇱"><span class="lang-option-flag">🇳🇱</span><span class="lang-option-name">Nederlands</span><span class="lang-option-code">NL</span></button>
+          <button class="lang-option" data-lang="pl" data-flag="🇵🇱"><span class="lang-option-flag">🇵🇱</span><span class="lang-option-name">Polski</span><span class="lang-option-code">PL</span></button>
+          <button class="lang-option" data-lang="uk" data-flag="🇺🇦"><span class="lang-option-flag">🇺🇦</span><span class="lang-option-name">Українська</span><span class="lang-option-code">UK</span></button>
+          <button class="lang-option" data-lang="sv" data-flag="🇸🇪"><span class="lang-option-flag">🇸🇪</span><span class="lang-option-name">Svenska</span><span class="lang-option-code">SV</span></button>
+          <button class="lang-option" data-lang="no" data-flag="🇳🇴"><span class="lang-option-flag">🇳🇴</span><span class="lang-option-name">Norsk</span><span class="lang-option-code">NO</span></button>
+          <button class="lang-option" data-lang="da" data-flag="🇩🇰"><span class="lang-option-flag">🇩🇰</span><span class="lang-option-name">Dansk</span><span class="lang-option-code">DA</span></button>
+          <button class="lang-option" data-lang="fi" data-flag="🇫🇮"><span class="lang-option-flag">🇫🇮</span><span class="lang-option-name">Suomi</span><span class="lang-option-code">FI</span></button>
+          <button class="lang-option" data-lang="cs" data-flag="🇨🇿"><span class="lang-option-flag">🇨🇿</span><span class="lang-option-name">Čeština</span><span class="lang-option-code">CS</span></button>
+          <button class="lang-option" data-lang="sk" data-flag="🇸🇰"><span class="lang-option-flag">🇸🇰</span><span class="lang-option-name">Slovenčina</span><span class="lang-option-code">SK</span></button>
+          <button class="lang-option" data-lang="ro" data-flag="🇷🇴"><span class="lang-option-flag">🇷🇴</span><span class="lang-option-name">Română</span><span class="lang-option-code">RO</span></button>
+          <button class="lang-option" data-lang="hu" data-flag="🇭🇺"><span class="lang-option-flag">🇭🇺</span><span class="lang-option-name">Magyar</span><span class="lang-option-code">HU</span></button>
+          <button class="lang-option" data-lang="el" data-flag="🇬🇷"><span class="lang-option-flag">🇬🇷</span><span class="lang-option-name">Ελληνικά</span><span class="lang-option-code">EL</span></button>
+          <button class="lang-option" data-lang="bg" data-flag="🇧🇬"><span class="lang-option-flag">🇧🇬</span><span class="lang-option-name">Български</span><span class="lang-option-code">BG</span></button>
+          <button class="lang-option" data-lang="hr" data-flag="🇭🇷"><span class="lang-option-flag">🇭🇷</span><span class="lang-option-name">Hrvatski</span><span class="lang-option-code">HR</span></button>
+          <button class="lang-option" data-lang="sr" data-flag="🇷🇸"><span class="lang-option-flag">🇷🇸</span><span class="lang-option-name">Српски</span><span class="lang-option-code">SR</span></button>
+          <button class="lang-option" data-lang="lt" data-flag="🇱🇹"><span class="lang-option-flag">🇱🇹</span><span class="lang-option-name">Lietuvių</span><span class="lang-option-code">LT</span></button>
+          <button class="lang-option" data-lang="lv" data-flag="🇱🇻"><span class="lang-option-flag">🇱🇻</span><span class="lang-option-name">Latviešu</span><span class="lang-option-code">LV</span></button>
+          <button class="lang-option" data-lang="et" data-flag="🇪🇪"><span class="lang-option-flag">🇪🇪</span><span class="lang-option-name">Eesti</span><span class="lang-option-code">ET</span></button>
+          <button class="lang-option" data-lang="ka" data-flag="🇬🇪"><span class="lang-option-flag">🇬🇪</span><span class="lang-option-name">ქართული</span><span class="lang-option-code">KA</span></button>
+          <button class="lang-option" data-lang="az" data-flag="🇦🇿"><span class="lang-option-flag">🇦🇿</span><span class="lang-option-name">Azərbaycan</span><span class="lang-option-code">AZ</span></button>
+          <button class="lang-option" data-lang="hy" data-flag="🇦🇲"><span class="lang-option-flag">🇦🇲</span><span class="lang-option-name">Հայերեն</span><span class="lang-option-code">HY</span></button>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-label">🌍 African</div>
+          <button class="lang-option" data-lang="sw" data-flag="🇰🇪"><span class="lang-option-flag">🇰🇪</span><span class="lang-option-name">Kiswahili</span><span class="lang-option-code">SW</span></button>
+          <button class="lang-option" data-lang="am" data-flag="🇪🇹"><span class="lang-option-flag">🇪🇹</span><span class="lang-option-name">አማርኛ</span><span class="lang-option-code">AM</span></button>
+          <button class="lang-option" data-lang="ha" data-flag="🇳🇬"><span class="lang-option-flag">🇳🇬</span><span class="lang-option-name">Hausa</span><span class="lang-option-code">HA</span></button>
+          <button class="lang-option" data-lang="yo" data-flag="🇳🇬"><span class="lang-option-flag">🇳🇬</span><span class="lang-option-name">Yorùbá</span><span class="lang-option-code">YO</span></button>
+          <button class="lang-option" data-lang="ig" data-flag="🇳🇬"><span class="lang-option-flag">🇳🇬</span><span class="lang-option-name">Igbo</span><span class="lang-option-code">IG</span></button>
+          <button class="lang-option" data-lang="so" data-flag="🇸🇴"><span class="lang-option-flag">🇸🇴</span><span class="lang-option-name">Soomaali</span><span class="lang-option-code">SO</span></button>
+          <button class="lang-option" data-lang="zu" data-flag="🇿🇦"><span class="lang-option-flag">🇿🇦</span><span class="lang-option-name">isiZulu</span><span class="lang-option-code">ZU</span></button>
+          <button class="lang-option" data-lang="af" data-flag="🇿🇦"><span class="lang-option-flag">🇿🇦</span><span class="lang-option-name">Afrikaans</span><span class="lang-option-code">AF</span></button>
+        </div>
+        </div>
+      </div>
+    </div>
+    <a href="quote.html" class="nav-cta" style="background:linear-gradient(120deg,#b86a0a,#8b4a06)">
+      Get a Quote <span class="cta-arrow">→</span>
+    </a>
+    <button class="nav-burger" id="burger" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="burger-line"></span><span class="burger-line"></span><span class="burger-line"></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-drawer" id="drawer">
+  <ul class="drawer-links">
+    <li><a href="home.html"          class="drawer-link">Home          <span class="drawer-arrow">›</span></a></li>
+    <li><a href="products.html"       class="drawer-link">Products      <span class="drawer-arrow">›</span></a></li>
+    <li><a href="infrastructure.html" class="drawer-link">Infrastructure <span class="drawer-arrow">›</span></a></li>
+    <li><a href="quality.html"        class="drawer-link">Quality       <span class="drawer-arrow">›</span></a></li>
+    <li><a href="about.html"          class="drawer-link">About         <span class="drawer-arrow">›</span></a></li>
+    <li><a href="contact.html"        class="drawer-link">Contact       <span class="drawer-arrow">›</span></a></li>
+  </ul>
+  <div class="drawer-cta-wrap"><a href="quote.html" class="drawer-cta">Get a Quote →</a></div>
+</div>
+
+<main class="page-body">
+
+  <section class="page-hero">
+    <div class="container page-hero-inner">
+      <div class="page-hero-label">Quote Request</div>
+      <h1 class="page-hero-title">Request a <em>Quote</em></h1>
+      <p class="page-hero-sub">Tell us about your requirement and our team will get back to you shortly.</p>
+    </div>
+  </section>
+
+  <section class="quote-body">
+    <div class="container">
+      <div class="quote-inner">
+
+        <div class="quote-left">
+          <div class="section-label">Get Started</div>
+          <h2 class="quote-left-title">Let's Find the <em>Right Solution</em></h2>
+          <p class="quote-left-sub">Fill in your details and we'll prepare a tailored quote for your specific requirements.</p>
+        </div>
+
+        <div class="quote-card">
+          <form id="quoteForm" novalidate>
+            <div class="form-grid-2">
+              <div class="form-field">
+                <label for="q-name">Name *</label>
+                <input type="text" id="q-name" placeholder="Your full name" required/>
+              </div>
+              <div class="form-field">
+                <label for="q-email">Email *</label>
+                <input type="email" id="q-email" placeholder="you@example.com" required/>
+              </div>
+              <div class="form-field">
+                <label for="q-phone">Phone *</label>
+                <input type="tel" id="q-phone" placeholder="+91 XXXXX XXXXX" required/>
+              </div>
+              <div class="form-field">
+                <label for="q-subject">Subject *</label>
+                <input type="text" id="q-subject" placeholder="Brief subject" required/>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="q-product">Select Product *</label>
+              <select id="q-product" required>
+                <option value="">Choose a product</option>
+                <option>Solar Dryer</option>
+                <option>Honey</option>
+                <option>Plastic Crates</option>
+                <option>Kitchen Equipments</option>
+                <option>Vegetable Slicer Machine</option>
+                <option>Pulverizer</option>
+                <option>Knapsack Sprayer</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="q-msg">Message</label>
+              <textarea id="q-msg" placeholder="Describe your requirement, quantity, specifications…"></textarea>
+            </div>
+
+            <div class="captcha-row">
+              <span id="captchaText"></span>
+              <input type="text" id="captchaInput" class="captcha-input" placeholder="Enter code above"/>
+            </div>
+
+            <button type="submit" class="btn btn-dark" style="font-size:0.9rem;padding:0.75rem 2rem;">
+              Send Request →
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <h3 class="footer-brand">Indo Thai Global</h3>
+      <p class="footer-text">Innovative solar drying solutions for agriculture and food processing industries. Est. 2005, Ludhiana, India.</p>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-title">Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="infrastructure.html">Infrastructure</a></li>
+        <li><a href="quality.html">Quality</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-title">Contact</h4>
+      <div class="footer-contact-item">📞 +91 76579-44044</div>
+      <div class="footer-contact-item">✉️ <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a7cec9c1c8e7cec9c3c8d3cfc6cec0cbc8c5c6cb89c4c8ca">[email&#160;protected]</a></div>
+      <div class="footer-contact-item">📍 Ludhiana, Punjab, India</div>
+    </div>
+  </div>
+  </div>
+    <p>&copy; 2026 Indo Thai Global &mdash; All Rights Reserved</p>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Indo Thai Global &mdash; All Rights Reserved</p>
+  </div>
+</footer>
+
+<!-- Google Translate (hidden) -->
+<div id="google_translate_element" style="display:none"></div>
+<script>
+function googleTranslateElementInit(){
+  new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
+}
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script src="js/navbar.js"></script>
+<script src="js/quote.js"></script>
+
+</body>
+</html>

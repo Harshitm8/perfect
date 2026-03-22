@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products — Indo Thai Global</title>
+  <meta name="description" content="Explore Indo Thai Global's full range of solar dryers and food processing equipment."/>
+  <link rel="icon" href="assets/logo.png" type="image/png"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/products.css"/>
+  <link rel="stylesheet" href="css/home.css"/>
+  <style>
+    /* ── 3D HERO CANVAS ── */
+    .hero { position: relative; overflow: hidden; }
+
+    #heroCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+      z-index: 0;
+    }
+    #heroCanvas:active { cursor: grabbing; }
+
+    .hero-overlay,
+    .hero-glow { z-index: 1; }
+
+    .hero-content {
+      z-index: 2;
+      position: absolute !important;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      padding: 0 24px;
+      text-align: center;
+      pointer-events: none;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .hero-content.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -46%);
+    }
+    .hero-content .hero-btns { pointer-events: all; }
+    .hero-content .hero-pill  { pointer-events: none; }
+
+    .hero-stats { display: none !important; }
+
+    .scroll-hint { z-index: 2; position: relative; }
+
+    /* ── 3D Controls (right side) ── */
+    .dryer-controls {
+      position: absolute;
+      bottom: 90px;
+      right: 20px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .dc-btn {
+      width: 33px; height: 33px;
+      border-radius: 8px;
+      border: 0.5px solid rgba(61,158,201,0.28);
+      background: rgba(4,14,26,0.72);
+      color: #3d9ec9;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.18s;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .dc-btn:hover { background: rgba(61,158,201,0.14); border-color: #3d9ec9; }
+    .dc-btn.on    { background: rgba(61,158,201,0.2);  border-color: #3d9ec9; }
+
+    .text-toggle {
+      position: absolute;
+      top: 80px;
+      right: 20px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(4,14,26,0.72);
+      border: 0.5px solid rgba(61,158,201,0.28);
+      border-radius: 20px;
+      padding: 5px 12px 5px 8px;
+      cursor: pointer;
+      font-size: 10px;
+      color: rgba(61,158,201,0.8);
+      letter-spacing: 0.07em;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.18s;
+      white-space: nowrap;
+    }
+    .text-toggle:hover { background: rgba(61,158,201,0.12); border-color: #3d9ec9; color: #3d9ec9; }
+    .text-toggle-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #3d9ec9;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .text-toggle.off .text-toggle-dot { background: rgba(61,158,201,0.3); }
+    .text-toggle.off { color: rgba(61,158,201,0.4); }
+
+    /* ── Arrow rotate controls (bottom-centre) ── */
+    .dryer-arrows {
+      position: absolute;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 34px 34px 34px;
+      grid-template-rows: 34px 34px;
+      gap: 5px;
+    }
+    .da-btn {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      border: 0.5px solid rgba(61,158,201,0.28);
+      background: rgba(4,14,26,0.72);
+      color: #3d9ec9;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      user-select: none;
+    }
+    .da-btn:hover  { background: rgba(61,158,201,0.14); border-color: #3d9ec9; }
+    .da-btn:active { background: rgba(61,158,201,0.28); transform: scale(0.93); }
+    .da-up    { grid-column: 2; grid-row: 1; }
+    .da-left  { grid-column: 1; grid-row: 2; }
+    .da-down  { grid-column: 2; grid-row: 2; }
+    .da-right { grid-column: 3; grid-row: 2; }
+
+    .dryer-hint {
+      position: absolute;
+      bottom: 68px;
+      left: 20px;
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+    }
+    .dh-item {
+      font-size: 9px;
+      color: rgba(255,255,255,0.28);
+      display: flex; align-items: center; gap: 4px;
+      letter-spacing: 0.07em;
+      font-family: inherit;
+    }
+    .dh-key {
+      width: 16px; height: 16px;
+      border: 0.5px solid rgba(255,255,255,0.15);
+      border-radius: 3px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px;
+    }
+
+    /* CTA strip */
+    .cta-strip { background: var(--off-white); border-top: 1px solid var(--border); padding: clamp(3rem,6vw,5rem) 0; }
+    .cta-strip-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .cta-strip-label { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sky); margin-bottom: 0.4rem; }
+    .cta-strip-title { font-family: var(--font-serif); font-size: clamp(1.5rem,3vw,2.2rem); font-weight: 600; color: var(--text-dark); line-height: 1.2; }
+    .cta-strip-btns { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-accent"></div>
+  <div class="nav-progress" id="navProgress"></div>
+  <div class="nav-inner">
+    <a href="home.html" class="nav-brand">
+      <img src="assets/logo.png" alt="Indo Thai Global" class="nav-logo"/>
+      <div class="nav-brand-words">
+        <span class="nav-brand-name">Indo Thai Global</span>
+        <span class="nav-brand-tag">Est. 2005 &middot; India</span>
+      </div>
+    </a>
+    <div class="nav-divider"></div>
+    <ul class="nav-links">
+      <li><a href="home.html"          class="nav-link">Home</a></li>
+      <li><a href="products.html"       class="nav-link active">Products</a></li>
+      <li><a href="infrastructure.html" class="nav-link">Infrastructure</a></li>
+      <li><a href="quality.html"        class="nav-link">Quality</a></li>
+      <li><a href="about.html"          class="nav-link">About</a></li>
+      <li><a href="contact.html"        class="nav-link">Contact</a></li>
+    </ul>
+    <!-- Language Switcher -->
+    <div class="nav-lang" id="navLang">
+      <button class="nav-lang-btn" id="langBtn" aria-label="Select language">
+        <span class="nav-lang-flag" id="langFlag">🇮🇳</span>
+        <span id="langCurrent">EN</span>
+        <span class="nav-lang-arrow">▼</span>
+      </button>
+      <div class="nav-lang-dropdown" id="langDropdown">
+        <div class="lang-search-wrap">
+          <input class="lang-search" id="langSearch" type="text" placeholder="Search language…" autocomplete="off"/>
+        </div>
+        <div class="lang-options-scroll" id="langOptionsScroll">
+        <div class="lang-group">
+          <div class="lang-group-label">🇮🇳 Indian Languages</div>
+          <button class="lang-option active" data-lang="en" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">English</span><span class="lang-option-code">EN</span></button>
+          <button class="lang-option" data-lang="hi" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">हिन्दी</span><span class="lang-option-code">HI</span></button>
+          <button class="lang-option" data-lang="pa" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">ਪੰਜਾਬੀ</span><span class="lang-option-code">PA</span></button>
+          <button class="lang-option" data-lang="bn" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">বাংলা</span><span class="lang-option-code">BN</span></button>
+          <button class="lang-option" data-lang="te" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">తెలుగు</span><span class="lang-option-code">TE</span></button>
+          <button class="lang-option" data-lang="mr" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">मराठी</span><span class="lang-option-code">MR</span></button>
+          <button class="lang-option" data-lang="ta" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">தமிழ்</span><span class="lang-option-code">TA</span></button>
+          <button class="lang-option" data-lang="gu" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">ગુજરાતી</span><span class="lang-option-code">GU</span></button>
+          <button class="lang-option" data-lang="kn" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">ಕನ್ನಡ</span><span class="lang-option-code">KN</span></button>
+          <button class="lang-option" data-lang="ml" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">മലയാളം</span><span class="lang-option-code">ML</span></button>
+          <button class="lang-option" data-lang="ur" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">اردو</span><span class="lang-option-code">UR</span></button>
+          <button class="lang-option" data-lang="ne" data-flag="🇳🇵"><span class="lang-option-flag">🇳🇵</span><span class="lang-option-name">नेपाली</span><span class="lang-option-code">NE</span></button>
+          <button class="lang-option" data-lang="si" data-flag="🇱🇰"><span class="lang-option-flag">🇱🇰</span><span class="lang-option-name">සිංහල</span><span class="lang-option-code">SI</span></button>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-label">🌏 Asian Languages</div>
+          <button class="lang-option" data-lang="th" data-flag="🇹🇭"><span class="lang-option-flag">🇹🇭</span><span class="lang-option-name">ภาษาไทย</span><span class="lang-option-code">TH</span></button>
+          <button class="lang-option" data-lang="vi" data-flag="🇻🇳"><span class="lang-option-flag">🇻🇳</span><span class="lang-option-name">Tiếng Việt</span><span class="lang-option-code">VI</span></button>
+          <button class="lang-option" data-lang="id" data-flag="🇮🇩"><span class="lang-option-flag">🇮🇩</span><span class="lang-option-name">Bahasa Indonesia</span><span class="lang-option-code">ID</span></button>
+          <button class="lang-option" data-lang="ms" data-flag="🇲🇾"><span class="lang-option-flag">🇲🇾</span><span class="lang-option-name">Bahasa Melayu</span><span class="lang-option-code">MS</span></button>
+          <button class="lang-option" data-lang="tl" data-flag="🇵🇭"><span class="lang-option-flag">🇵🇭</span><span class="lang-option-name">Filipino</span><span class="lang-option-code">TL</span></button>
+          <button class="lang-option" data-lang="zh-CN" data-flag="🇨🇳"><span class="lang-option-flag">🇨🇳</span><span class="lang-option-name">中文 (简体)</span><span class="lang-option-code">ZH</span></button>
+          <button class="lang-option" data-lang="zh-TW" data-flag="🇹🇼"><span class="lang-option-flag">🇹🇼</span><span class="lang-option-name">中文 (繁體)</span><span class="lang-option-code">TW</span></button>
+          <button class="lang-option" data-lang="ja" data-flag="🇯🇵"><span class="lang-option-flag">🇯🇵</span><span class="lang-option-name">日本語</span><span class="lang-option-code">JA</span></button>
+          <button class="lang-option" data-lang="ko" data-flag="🇰🇷"><span class="lang-option-flag">🇰🇷</span><span class="lang-option-name">한국어</span><span class="lang-option-code">KO</span></button>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-label">🌍 Middle East</div>
+          <button class="lang-option" data-lang="ar" data-flag="🇸🇦"><span class="lang-option-flag">🇸🇦</span><span class="lang-option-name">العربية</span><span class="lang-option-code">AR</span></button>
+          <button class="lang-option" data-lang="fa" data-flag="🇮🇷"><span class="lang-option-flag">🇮🇷</span><span class="lang-option-name">فارسی</span><span class="lang-option-code">FA</span></button>
+          <button class="lang-option" data-lang="tr" data-flag="🇹🇷"><span class="lang-option-flag">🇹🇷</span><span class="lang-option-name">Türkçe</span><span class="lang-option-code">TR</span></button>
+          <button class="lang-option" data-lang="he" data-flag="🇮🇱"><span class="lang-option-flag">🇮🇱</span><span class="lang-option-name">עברית</span><span class="lang-option-code">HE</span></button>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-label">🌍 European</div>
+          <button class="lang-option" data-lang="fr" data-flag="🇫🇷"><span class="lang-option-flag">🇫🇷</span><span class="lang-option-name">Français</span><span class="lang-option-code">FR</span></button>
+          <button class="lang-option" data-lang="de" data-flag="🇩🇪"><span class="lang-option-flag">🇩🇪</span><span class="lang-option-name">Deutsch</span><span class="lang-option-code">DE</span></button>
+          <button class="lang-option" data-lang="es" data-flag="🇪🇸"><span class="lang-option-flag">🇪🇸</span><span class="lang-option-name">Español</span><span class="lang-option-code">ES</span></button>
+          <button class="lang-option" data-lang="pt" data-flag="🇧🇷"><span class="lang-option-flag">🇧🇷</span><span class="lang-option-name">Português</span><span class="lang-option-code">PT</span></button>
+          <button class="lang-option" data-lang="it" data-flag="🇮🇹"><span class="lang-option-flag">🇮🇹</span><span class="lang-option-name">Italiano</span><span class="lang-option-code">IT</span></button>
+          <button class="lang-option" data-lang="ru" data-flag="🇷🇺"><span class="lang-option-flag">🇷🇺</span><span class="lang-option-name">Русский</span><span class="lang-option-code">RU</span></button>
+          <button class="lang-option" data-lang="nl" data-flag="🇳🇱"><span class="lang-option-flag">🇳🇱</span><span class="lang-option-name">Nederlands</span><span class="lang-option-code">NL</span></button>
+          <button class="lang-option" data-lang="pl" data-flag="🇵🇱"><span class="lang-option-flag">🇵🇱</span><span class="lang-option-name">Polski</span><span class="lang-option-code">PL</span></button>
+          <button class="lang-option" data-lang="sv" data-flag="🇸🇪"><span class="lang-option-flag">🇸🇪</span><span class="lang-option-name">Svenska</span><span class="lang-option-code">SV</span></button>
+          <button class="lang-option" data-lang="el" data-flag="🇬🇷"><span class="lang-option-flag">🇬🇷</span><span class="lang-option-name">Ελληνικά</span><span class="lang-option-code">EL</span></button>
+        </div>
+        <div class="lang-group">
+          <div class="lang-group-label">🌍 African</div>
+          <button class="lang-option" data-lang="sw" data-flag="🇰🇪"><span class="lang-option-flag">🇰🇪</span><span class="lang-option-name">Kiswahili</span><span class="lang-option-code">SW</span></button>
+          <button class="lang-option" data-lang="am" data-flag="🇪🇹"><span class="lang-option-flag">🇪🇹</span><span class="lang-option-name">አማርኛ</span><span class="lang-option-code">AM</span></button>
+          <button class="lang-option" data-lang="af" data-flag="🇿🇦"><span class="lang-option-flag">🇿🇦</span><span class="lang-option-name">Afrikaans</span><span class="lang-option-code">AF</span></button>
+        </div>
+        </div>
+      </div>
+    </div>
+    <a href="quote.html" class="nav-cta">Get a Quote <span class="cta-arrow">→</span></a>
+    <button class="nav-burger" id="burger" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="burger-line"></span><span class="burger-line"></span><span class="burger-line"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="nav-drawer" id="drawer">
+  <ul class="drawer-links">
+    <li><a href="home.html"          class="drawer-link">Home          <span class="drawer-arrow">›</span></a></li>
+    <li><a href="products.html"       class="drawer-link">Products      <span class="drawer-arrow">›</span></a></li>
+    <li><a href="infrastructure.html" class="drawer-link">Infrastructure <span class="drawer-arrow">›</span></a></li>
+    <li><a href="quality.html"        class="drawer-link">Quality       <span class="drawer-arrow">›</span></a></li>
+    <li><a href="about.html"          class="drawer-link">About         <span class="drawer-arrow">›</span></a></li>
+    <li><a href="contact.html"        class="drawer-link">Contact       <span class="drawer-arrow">›</span></a></li>
+  </ul>
+  <div class="drawer-cta-wrap"><a href="quote.html" class="drawer-cta">Get a Quote →</a></div>
+</div>
+
+<main class="page-body">
+
+  <!-- ░░ 3D INTERACTIVE HERO ░░ -->
+  <section class="hero" aria-label="Products Hero">
+
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
+
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-glow"    aria-hidden="true"></div>
+
+    <!-- Text hide/show toggle -->
+    <button class="text-toggle on" id="bTextToggle" title="Hide / show text overlay">
+      <span class="text-toggle-dot"></span>
+      <span id="textToggleLabel">Hide Text</span>
+    </button>
+
+    <!-- Hero content -->
+    <div class="hero-content" id="heroContent">
+      <div class="hero-pill">
+        <span class="pill-dot" aria-hidden="true"></span>
+        Efficient · Hygienic · Sustainable
+      </div>
+
+      <h1 class="hero-h1">
+        Our <em>Products</em>
+      </h1>
+
+      <p class="hero-p">
+        Industrial-grade solar drying solutions and food processing equipment —
+        built for performance, hygiene and decades of reliable service.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#products" class="btn btn-dark">Browse Products</a>
+        <a href="#videos"   class="btn btn-ghost-white">See In Action</a>
+      </div>
+    </div>
+
+    <!-- 3D controls (right side) -->
+    <div class="dryer-controls" aria-label="3D model controls">
+      <button class="dc-btn on" id="bAuto"    title="Auto rotate">↻</button>
+      <button class="dc-btn"    id="bXray"    title="See inside (X-ray)">◎</button>
+      <button class="dc-btn"    id="bExplode" title="Explode view">⊞</button>
+      <button class="dc-btn"    id="bReset"   title="Reset view">⌂</button>
+    </div>
+
+    <!-- Arrow rotate controls (bottom-centre) -->
+    <div class="dryer-arrows" aria-label="Rotate model">
+      <button class="da-btn da-up"    id="bUp"    title="Rotate up"   >▲</button>
+      <button class="da-btn da-left"  id="bLeft"  title="Rotate left" >◀</button>
+      <button class="da-btn da-down"  id="bDown"  title="Rotate down" >▼</button>
+      <button class="da-btn da-right" id="bRight" title="Rotate right">▶</button>
+    </div>
+
+    <!-- drag hint -->
+    <div class="dryer-hint" aria-hidden="true">
+      <div class="dh-item"><div class="dh-key">⊙</div>drag</div>
+      <div class="dh-item"><div class="dh-key">↕</div>zoom</div>
+    </div>
+
+    <!-- scroll hint -->
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <div class="scroll-dot"></div>
+    </div>
+
+  </section>
+
+  <!-- ░░ PRODUCTS GRID ░░ -->
+  <section class="products-section" id="products">
+    <div class="container">
+      <div class="products-header" data-reveal>
+        <div class="products-eyebrow">Our Range</div>
+        <h2 class="products-title">Our <em>Products</em></h2>
+        <p class="products-sub">Advanced solar &amp; hybrid drying systems engineered for food, agriculture and pharmaceutical industries.</p>
+      </div>
+      <div class="products-grid" id="productsGrid"></div>
+    </div>
+  </section>
+
+  <!-- Solar Dryer Detail Modal -->
+  <div class="sd-modal-backdrop" id="sdModalBackdrop" role="dialog" aria-modal="true" aria-label="Solar Dryer Details">
+    <div class="sd-modal-box" id="sdModalBox">
+      <button class="sd-modal-close" id="sdModalClose" aria-label="Close">✕</button>
+
+      <div class="sd-tabs">
+        <button class="sd-tab active" data-tab="models">Capacity Models</button>
+        <button class="sd-tab" data-tab="dryable">Products to Dry</button>
+        <button class="sd-tab" data-tab="features">Technical Features</button>
+      </div>
+
+      <!-- TAB: Capacity Models -->
+      <div class="sd-tab-panel active" id="tab-models">
+        <div class="sd-section-title">Small Capacity Models</div>
+        <div class="sd-model-grid">
+          <div class="sd-model-card" data-reveal>
+            <div class="sd-model-header">
+              <span class="sd-model-badge">ITG-SD5</span>
+              <span class="sd-model-cap">5 kg</span>
+            </div>
+            <ul class="sd-model-specs">
+              <li><span>Trays</span><span>3</span></li>
+              <li><span>Solar Panels</span><span>1</span></li>
+              <li><span>Fans</span><span>1</span></li>
+              <li><span>Temperature</span><span>45–65°C</span></li>
+              <li><span>Weight</span><span>25 kg</span></li>
+            </ul>
+            <div class="sd-model-apps">Herbs, vegetables, fruits, spices</div>
+          </div>
+          <div class="sd-model-card" data-reveal>
+            <div class="sd-model-header">
+              <span class="sd-model-badge">ITG-SD25</span>
+              <span class="sd-model-cap">25 kg</span>
+            </div>
+            <ul class="sd-model-specs">
+              <li><span>Energy</span><span>Solar + Electric/Biomass backup</span></li>
+              <li><span>Application</span><span>Chilli, ginger, turmeric, fruits</span></li>
+            </ul>
+            <div class="sd-model-apps">Chilli, ginger, turmeric, fruits</div>
+          </div>
+        </div>
+
+        <div class="sd-section-title" style="margin-top:2rem">Medium Capacity Models</div>
+        <div class="sd-model-grid">
+          <div class="sd-model-card" data-reveal>
+            <div class="sd-model-header">
+              <span class="sd-model-badge">ITG-SD50</span>
+              <span class="sd-model-cap">50 kg</span>
+            </div>
+            <ul class="sd-model-specs">
+              <li><span>Trays</span><span>10</span></li>
+              <li><span>Solar Panels</span><span>2</span></li>
+              <li><span>Fans</span><span>2–3</span></li>
+              <li><span>Temperature</span><span>45–70°C</span></li>
+              <li><span>Weight</span><span>120 kg</span></li>
+            </ul>
+            <div class="sd-model-apps">Spices, vegetables, fish</div>
+          </div>
+          <div class="sd-model-card" data-reveal>
+            <div class="sd-model-header">
+              <span class="sd-model-badge">ITG-SD100</span>
+              <span class="sd-model-cap">100 kg</span>
+            </div>
+            <ul class="sd-model-specs">
+              <li><span>Trays</span><span>20</span></li>
+              <li><span>Solar Panels</span><span>3–4</span></li>
+              <li><span>Fans</span><span>4</span></li>
+              <li><span>Temperature</span><span>50–75°C</span></li>
+              <li><span>Weight</span><span>250 kg</span></li>
+            </ul>
+            <div class="sd-model-apps">Fruits, herbs, commercial drying</div>
+          </div>
+        </div>
+
+        <div class="sd-section-title" style="margin-top:2rem">Large Capacity Models</div>
+        <div class="sd-model-grid">
+          <div class="sd-model-card sd-model-card--featured" data-reveal>
+            <div class="sd-model-header">
+              <span class="sd-model-badge">ITG-SD250</span>
+              <span class="sd-model-cap">250 kg</span>
+            </div>
+            <ul class="sd-model-specs">
+              <li><span>Trays</span><span>40</span></li>
+              <li><span>Solar Panels</span><span>6</span></li>
+              <li><span>Fans</span><span>6</span></li>
+              <li><span>Type</span><span>Hybrid heating system</span></li>
+              <li><span>Temperature</span><span>50–80°C</span></li>
+              <li><span>Weight</span><span>500 kg</span></li>
+            </ul>
+            <div class="sd-model-apps">Large farms and food processing</div>
+          </div>
+          <div class="sd-model-card sd-model-card--featured" data-reveal>
+            <div class="sd-model-header">
+              <span class="sd-model-badge">ITG-SD500</span>
+              <span class="sd-model-cap">500 kg</span>
+            </div>
+            <ul class="sd-model-specs">
+              <li><span>Trays</span><span>80</span></li>
+              <li><span>Solar Panels</span><span>10+</span></li>
+              <li><span>Fans</span><span>10</span></li>
+              <li><span>Type</span><span>Hybrid heating system</span></li>
+              <li><span>Temperature</span><span>50–90°C</span></li>
+              <li><span>Weight</span><span>900 kg</span></li>
+            </ul>
+            <div class="sd-model-apps">Industrial food processing, fish drying</div>
+          </div>
+        </div>
+
+        <div class="sd-cta-row">
+          <a href="quote.html" class="btn btn-dark">Request a Quote →</a>
+          <a href="contact.html" class="btn btn-ghost">Contact Us</a>
+        </div>
+      </div>
+
+      <!-- TAB: Products that can be dried -->
+      <div class="sd-tab-panel" id="tab-dryable">
+        <div class="sd-dryable-grid">
+          <div class="sd-dryable-cat"><div class="sd-dryable-icon">🍋</div><h4>Fruits</h4><p>Mango · Banana · Pineapple · Apple · Papaya</p></div>
+          <div class="sd-dryable-cat"><div class="sd-dryable-icon">🥕</div><h4>Vegetables</h4><p>Onion · Tomato · Carrot · Garlic · Beetroot</p></div>
+          <div class="sd-dryable-cat"><div class="sd-dryable-icon">🌶️</div><h4>Spices</h4><p>Turmeric · Ginger · Chilli · Pepper · Coriander</p></div>
+          <div class="sd-dryable-cat"><div class="sd-dryable-icon">🌿</div><h4>Herbs &amp; Medicinal</h4><p>Neem · Tulsi · Mint · Aloe Vera · Ashwagandha</p></div>
+          <div class="sd-dryable-cat"><div class="sd-dryable-icon">🐟</div><h4>Fish &amp; Meat</h4><p>Fish · Shrimp · Meat — hygienic protected drying</p></div>
+          <div class="sd-dryable-cat"><div class="sd-dryable-icon">🌾</div><h4>Grains &amp; Others</h4><p>Seeds · Pulses · Cereals · Organic produce</p></div>
+        </div>
+      </div>
+
+      <!-- TAB: Technical Features -->
+      <div class="sd-tab-panel" id="tab-features">
+        <div class="sd-features-grid">
+          <div class="sd-feature-block"><div class="sd-feature-icon">⚡</div><h4>Solar Panels</h4><p>High-efficiency photovoltaic panels powering fans and digital controls with zero fuel cost.</p></div>
+          <div class="sd-feature-block"><div class="sd-feature-icon">💨</div><h4>Solar Fans</h4><p>Ensure uniform airflow throughout the drying chamber for consistent, faster drying results.</p></div>
+          <div class="sd-feature-block"><div class="sd-feature-icon">🏭</div><h4>Drying Chamber</h4><p>Food-grade stainless steel chamber with insulation maintaining precise temperature zones.</p></div>
+          <div class="sd-feature-block"><div class="sd-feature-icon">🔲</div><h4>Drying Trays</h4><p>Stainless steel mesh trays for hygienic drying — removable and easy to clean.</p></div>
+          <div class="sd-feature-block"><div class="sd-feature-icon">🌡️</div><h4>Digital Temperature Control</h4><p>Precise digital PID controller with humidity sensors for accurate drying conditions.</p></div>
+          <div class="sd-feature-block"><div class="sd-feature-icon">🔄</div><h4>Automatic Airflow</h4><p>Automatic airflow control with optional IoT monitoring system for remote management.</p></div>
+          <div class="sd-feature-block"><div class="sd-feature-icon">🔩</div><h4>Stainless Steel Structure</h4><p>Heavy-duty stainless steel frame with optional mobility wheels for flexible placement.</p></div>
+          <div class="sd-feature-block"><div class="sd-feature-icon">☀️</div><h4>Hybrid Backup</h4><p>Electric and biomass backup heating ensures continuous drying even on cloudy days.</p></div>
+        </div>
+        <div class="sd-comparison-table" data-reveal>
+          <h4>Traditional Drying vs Solar Drying</h4>
+          <table>
+            <thead><tr><th>Feature</th><th>Traditional</th><th>Solar Dryer</th></tr></thead>
+            <tbody>
+              <tr><td>Hygiene</td><td class="td-bad">Low</td><td class="td-good">High ✓</td></tr>
+              <tr><td>Drying Speed</td><td class="td-bad">Slow</td><td class="td-good">Fast ✓</td></tr>
+              <tr><td>Weather Dependency</td><td class="td-bad">High</td><td class="td-good">Low ✓</td></tr>
+              <tr><td>Product Quality</td><td class="td-bad">Inconsistent</td><td class="td-good">Uniform ✓</td></tr>
+              <tr><td>Operating Cost</td><td class="td-bad">High</td><td class="td-good">Near Zero ✓</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ░░ VIDEO SHOWCASE ░░ -->
+  <section class="video-section" id="videos" aria-label="Product videos">
+    <div class="container">
+      <div class="video-section-header" data-reveal>
+        <div class="video-section-eyebrow">See It In Action</div>
+        <h2 class="video-section-title">Our <em>Products at Work</em></h2>
+      </div>
+      <div class="video-dots-row">
+        <div class="video-nav-dots" id="videoNavDots"></div>
+      </div>
+      <div class="video-outer">
+        <button class="video-arrow" id="videoPrev" aria-label="Previous video">&#8592;</button>
+        <div class="video-player-wrap" id="videoPlayerWrap">
+          <div class="video-panel" data-index="0" role="tabpanel">
+            <video preload="none" poster="assets/videos/thumb-solar-dryer.png" playsinline>
+              <source src="assets/videos/solar-dryer.mp4" type="video/mp4"/>
+            </video>
+            <div class="video-panel-overlay"><div class="vp-play-btn" aria-label="Play video">▶</div></div>
+            <div class="video-progress-bar"></div>
+          </div>
+          <div class="video-panel" data-index="1" role="tabpanel">
+            <video preload="none" poster="assets/videos/thumb-slicer.jpg" playsinline>
+              <source src="assets/videos/vegetable-slicer.mp4" type="video/mp4"/>
+            </video>
+            <div class="video-panel-overlay"><div class="vp-play-btn" aria-label="Play video">▶</div></div>
+            <div class="video-progress-bar"></div>
+          </div>
+          <div class="video-panel" data-index="2" role="tabpanel">
+            <video preload="none" poster="assets/videos/thumb-pulverizer.jpg" playsinline>
+              <source src="assets/videos/pulverizer.mp4" type="video/mp4"/>
+            </video>
+            <div class="video-panel-overlay"><div class="vp-play-btn" aria-label="Play video">▶</div></div>
+            <div class="video-progress-bar"></div>
+          </div>
+          <div class="vp-controls" id="vpControls">
+            <button class="vp-mute-btn" id="vpMuteBtn" aria-label="Unmute video" title="Unmute">
+              <span class="vp-mute-icon" id="vpMuteIcon">🔇</span>
+            </button>
+          </div>
+        </div>
+        <button class="video-arrow" id="videoNext" aria-label="Next video">&#8594;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ░░ CTA STRIP ░░ -->
+  <section class="cta-strip">
+    <div class="container">
+      <div class="cta-strip-inner">
+        <div>
+          <p class="cta-strip-label">Ready to get started?</p>
+          <h2 class="cta-strip-title">Let's find the right product for you</h2>
+        </div>
+        <div class="cta-strip-btns">
+          <a href="quote.html"   class="btn btn-dark">Request a Quote →</a>
+          <a href="contact.html" class="btn btn-ghost">Get in Touch</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <h3 class="footer-brand">Indo Thai Global</h3>
+      <p class="footer-text">Innovative solar drying solutions for agriculture and food processing industries. Est. 2005, Ludhiana, India.</p>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-title">Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="infrastructure.html">Infrastructure</a></li>
+        <li><a href="quality.html">Quality</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-title">Contact</h4>
+      <div class="footer-contact-item">📞 +91 76579-44044</div>
+      <div class="footer-contact-item">✉️ info@indothaiglobal.com</div>
+      <div class="footer-contact-item">📍 Ludhiana, Punjab, India</div>
+    </div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Indo Thai Global — All Rights Reserved</p></div>
+</footer>
+
+<!-- Google Translate (hidden) -->
+<div id="google_translate_element" style="display:none"></div>
+<script>
+function googleTranslateElementInit(){
+  new google.translate.TranslateElement({pageLanguage:'en',autoDisplay:false},'google_translate_element');
+}
+</script>
+
+<!-- ░░ SCRIPTS ░░ -->
+<script src="js/navbar.js"></script>
+<script src="js/products.js"></script>
+<script src="js/home.js"></script>
+
+<!-- ░░ THREE.JS — 3D HERO BACKGROUND ░░ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  const canvas = document.getElementById('heroCanvas');
+  const hero   = canvas.parentElement;
+  const W = () => hero.clientWidth;
+  const H = () => hero.clientHeight;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.1;
+  renderer.setSize(W(), H());
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x060d18, 0.026);
+
+  const camera = new THREE.PerspectiveCamera(40, W() / H(), 0.1, 300);
+  camera.position.set(11, 7, 15);
+  camera.lookAt(0, 1.2, 0);
+
+  scene.add(new THREE.AmbientLight(0x0a1e30, 0.65));
+
+  const sunLight = new THREE.DirectionalLight(0xe8f4ff, 3.2);
+  sunLight.position.set(12, 18, 10);
+  sunLight.castShadow = true;
+  sunLight.shadow.mapSize.width = sunLight.shadow.mapSize.height = 2048;
+  sunLight.shadow.camera.left   = sunLight.shadow.camera.bottom = -14;
+  sunLight.shadow.camera.right  = sunLight.shadow.camera.top   =  14;
+  sunLight.shadow.camera.far    = 60;
+  scene.add(sunLight);
+
+  const fill1 = new THREE.PointLight(0x0d4a7a, 1.1, 30, 2);
+  fill1.position.set(-6, 4, -3);
+  scene.add(fill1);
+
+  const fill2 = new THREE.PointLight(0x1a6090, 0.5, 20, 2);
+  fill2.position.set(4, 2, 6);
+  scene.add(fill2);
+
+  const M = {
+    frame:   new THREE.MeshStandardMaterial({ color: 0x2a3a4a, metalness: 0.88, roughness: 0.20 }),
+    frameAl: new THREE.MeshStandardMaterial({ color: 0xc8dce8, metalness: 0.92, roughness: 0.12 }),
+    poly:    new THREE.MeshPhysicalMaterial({ color: 0xadd8e6, transparent: true, opacity: 0.22, roughness: 0.04, transmission: 0.55, side: THREE.DoubleSide }),
+    polyEnd: new THREE.MeshPhysicalMaterial({ color: 0x9dd0e8, transparent: true, opacity: 0.28, roughness: 0.04, side: THREE.DoubleSide }),
+    white:   new THREE.MeshStandardMaterial({ color: 0xecece6, roughness: 0.72, metalness: 0.02 }),
+    meshTr:  new THREE.MeshStandardMaterial({ color: 0x4a8ab8, wireframe: true, transparent: true, opacity: 0.85 }),
+    trayFr:  new THREE.MeshStandardMaterial({ color: 0x3a6a90, metalness: 0.30, roughness: 0.55 }),
+    pr1:     new THREE.MeshStandardMaterial({ color: 0x1a6aaa, roughness: 0.85 }),
+    pr2:     new THREE.MeshStandardMaterial({ color: 0x2a8ac0, roughness: 0.80 }),
+    pr3:     new THREE.MeshStandardMaterial({ color: 0x1a5a90, roughness: 0.80 }),
+    panelB:  new THREE.MeshStandardMaterial({ color: 0x061830, roughness: 0.55, metalness: 0.10 }),
+    panelC:  new THREE.MeshStandardMaterial({ color: 0x040e22, roughness: 0.65 }),
+    panelFr: new THREE.MeshStandardMaterial({ color: 0x5a8aaa, metalness: 0.82, roughness: 0.18 }),
+    ridge:   new THREE.MeshStandardMaterial({ color: 0x8ab8d8, metalness: 0.88, roughness: 0.14 }),
+    support: new THREE.MeshStandardMaterial({ color: 0x2a3a4a, metalness: 0.85, roughness: 0.25 }),
+    vent:    new THREE.MeshStandardMaterial({ color: 0x304050, metalness: 0.70, roughness: 0.30 }),
+  };
+
+  const mainGroup = new THREE.Group();
+  mainGroup.position.y = -1.2;
+  scene.add(mainGroup);
+
+  const parts = [];
+  function reg(obj, dir) {
+    parts.push({ obj, base: obj.position.clone(), dir: dir || new THREE.Vector3() });
+    mainGroup.add(obj);
+  }
+
+  function mkM(geo, mat, x, y, z, rx, ry, rz) {
+    const m = new THREE.Mesh(geo, mat);
+    m.position.set(x || 0, y || 0, z || 0);
+    if (rx) m.rotation.x = rx;
+    if (ry) m.rotation.y = ry;
+    if (rz) m.rotation.z = rz;
+    m.castShadow = true;
+    m.receiveShadow = true;
+    return m;
+  }
+
+  const DL = 7.6, DW = 3.0, DH = 0.9, RH = 1.4;
+
+  [[-DL/2+.18,-DW/2+.18],[-DL/2+.18,DW/2-.18],[DL/2-.18,-DW/2+.18],[DL/2-.18,DW/2-.18],[0,-DW/2+.18],[0,DW/2-.18]]
+    .forEach(([lx, lz]) => {
+      reg(mkM(new THREE.CylinderGeometry(.048,.048,DH+.05,8), M.frame, lx, (DH+.05)/2, lz),
+          new THREE.Vector3(lx>.1?.6:lx<-.1?-.6:0, -.5, lz>0?1.3:-1.3));
+    });
+
+  [-DW/2, DW/2].forEach((z, i) => {
+    reg(mkM(new THREE.BoxGeometry(DL,.055,.055), M.frame, 0, DH, z),
+        new THREE.Vector3(0, -.35, i===0?-.9:.9));
+  });
+  for (let j = 0; j <= 8; j++) {
+    const x = -DL/2 + j*(DL/8);
+    reg(mkM(new THREE.BoxGeometry(.055,.055,DW), M.frame, x, DH, 0),
+        new THREE.Vector3(x<0?-.25:.25, -.3, 0));
+  }
+
+  [-DW/2+.025, DW/2-.025].forEach((z, i) => {
+    reg(mkM(new THREE.BoxGeometry(DL-.12,.32,.028), M.white, 0, DH+.16, z),
+        new THREE.Vector3(0, 0, i===0?-1.8:1.8));
+  });
+
+  reg(mkM(new THREE.BoxGeometry(DL+.14,.065,.065), M.ridge, 0, DH+RH, 0),
+      new THREE.Vector3(0, 1.8, 0));
+
+  const slantLen = Math.sqrt((DW/2)*(DW/2) + RH*RH);
+  const slantAng = Math.atan2(RH, DW/2);
+  const numRP = 10, rpLen = DL / numRP;
+
+  [-1, 1].forEach(sign => {
+    for (let p = 0; p < numRP; p++) {
+      const px = -DL/2 + p*rpLen + rpLen/2;
+      const pn = mkM(new THREE.BoxGeometry(rpLen-.015,.016,slantLen-.04), M.poly, px, DH+RH/2, sign*DW/4);
+      pn.rotation.x = sign * (Math.PI/2 - slantAng);
+      reg(pn, new THREE.Vector3(0, 1.1, sign*2.6));
+    }
+    mainGroup.add(mkM(new THREE.BoxGeometry(DL+.12,.032,.032), M.frameAl, 0, DH+.01, sign*(DW/2-.01)));
+  });
+
+  for (let j = 0; j <= 8; j++) {
+    const fx = -DL/2 + j*(DL/8);
+    [-1, 1].forEach(sign => {
+      const rafter = mkM(new THREE.BoxGeometry(.04,.04,slantLen+.04), M.frameAl, fx, DH+RH/2, sign*DW/4);
+      rafter.rotation.x = sign * (Math.PI/2 - slantAng);
+      mainGroup.add(rafter);
+    });
+  }
+
+  [-DL/2, DL/2].forEach((ex, i) => {
+    const sh = new THREE.Shape();
+    sh.moveTo(-DW/2, 0); sh.lineTo(DW/2, 0); sh.lineTo(0, RH); sh.closePath();
+    const tri = new THREE.Mesh(new THREE.ShapeGeometry(sh), M.polyEnd);
+    tri.position.set(ex + (i===0?-.012:.012), DH, 0);
+    tri.rotation.y = Math.PI/2;
+    tri.castShadow = false;
+    reg(tri, new THREE.Vector3(i===0?-3:3, 0, 0));
+
+    const vr = mkM(new THREE.TorusGeometry(.2,.032,8,16), M.vent, ex+(i===0?-.06:.06), DH+RH*.55, 0);
+    vr.rotation.y = Math.PI/2;
+    reg(vr, new THREE.Vector3(i===0?-3.5:3.5, .5, 0));
+    for (let s = 0; s < 4; s++) {
+      const sp = mkM(new THREE.BoxGeometry(.016,.4,.016), M.vent, ex+(i===0?-.06:.06), DH+RH*.55, 0);
+      sp.rotation.y = Math.PI/2; sp.rotation.z = s*Math.PI/4;
+      mainGroup.add(sp);
+    }
+  });
+
+  const trayPos = [
+    [-2.7,-.72],[-0.9,-.72],[0.9,-.72],[2.7,-.72],
+    [-2.7, .72],[-0.9, .72],[0.9, .72],[2.7, .72],
+  ];
+  const prMats = [M.pr1, M.pr2, M.pr3];
+  trayPos.forEach(([tx, tz], ti) => {
+    const tg = new THREE.Group();
+    tg.add(mkM(new THREE.BoxGeometry(1.3,.042,1.1), M.trayFr));
+    const ms = new THREE.Mesh(new THREE.PlaneGeometry(1.2,1.0,10,8), M.meshTr);
+    ms.rotation.x = -Math.PI/2; ms.position.y = .025; tg.add(ms);
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 5; c++) {
+      const pm = prMats[(ti+r+c)%3];
+      const isRound = (r*c)%2===0;
+      const pg = isRound
+        ? new THREE.SphereGeometry(.055+Math.random()*.018, 6, 5)
+        : new THREE.BoxGeometry(.08,.038,.08);
+      const p = new THREE.Mesh(pg, pm);
+      if (isRound) p.scale.y = .52;
+      p.position.set(-.42+c*.22, .065, -.36+r*.25);
+      p.castShadow = true; tg.add(p);
+    }
+    tg.position.set(tx, DH+.14, tz);
+    reg(tg, new THREE.Vector3((tx>0?1.4:-1.4)*.5, .6+ti*.12, (tz>0?1.4:-1.4)));
+  });
+
+  const spG = new THREE.Group();
+  spG.add(mkM(new THREE.BoxGeometry(1.15,.024,.78), M.panelB));
+  spG.add(mkM(new THREE.BoxGeometry(1.17,.038,.80), M.panelFr, 0,-.007,0));
+  for (let r = 0; r < 3; r++) for (let c = 0; c < 5; c++)
+    spG.add(mkM(new THREE.BoxGeometry(.18,.02,.2), M.panelC, -.4+c*.2, .018, -.26+r*.26));
+  spG.rotation.x = -Math.PI/5;
+  spG.position.set(-DL/2-.3, DH-.05, DW/2+1.1);
+  reg(spG, new THREE.Vector3(-1.8, 0, 3));
+
+  [-.45, .45].forEach(lx => {
+    mainGroup.add(mkM(new THREE.CylinderGeometry(.025,.025,.9,6), M.support, -DL/2-.3+lx, .45, DW/2+1.1));
+  });
+
+  const cPts = [
+    new THREE.Vector3(-DL/2-.3, DH+.1,  DW/2+.65),
+    new THREE.Vector3(-DL/2-.05,DH+.04, DW/2+.22),
+    new THREE.Vector3(-DL/2+.25,DH+.01, DW/2-.12),
+  ];
+  mainGroup.add(new THREE.Mesh(
+    new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cPts), 14, .014, 5),
+    new THREE.MeshStandardMaterial({ color: 0x202020, roughness: .9 })
+  ));
+
+  const PC = 180;
+  const pArr = new Float32Array(PC*3);
+  const pVel = [];
+  for (let i = 0; i < PC; i++) {
+    pArr[i*3]   = (Math.random()-.5)*(DL-.6);
+    pArr[i*3+1] = DH+.12+Math.random()*.85;
+    pArr[i*3+2] = (Math.random()-.5)*(DW-.6);
+    pVel.push({ vx:(Math.random()-.5)*.007, vy:.004+Math.random()*.007, vz:(Math.random()-.5)*.006 });
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pArr, 3));
+  const pMesh = new THREE.Points(pGeo, new THREE.PointsMaterial({ color:0xadd8e6, size:.038, transparent:true, opacity:.5 }));
+  mainGroup.add(pMesh);
+
+  const sunBall = new THREE.Mesh(new THREE.SphereGeometry(.6,16,16), new THREE.MeshBasicMaterial({ color:0xadd8e6 }));
+  sunBall.position.set(12,18,10); scene.add(sunBall);
+  const sunGlow = new THREE.Mesh(new THREE.SphereGeometry(1.0,16,16), new THREE.MeshBasicMaterial({ color:0x8bc8e8, transparent:true, opacity:.10 }));
+  sunGlow.position.copy(sunBall.position); scene.add(sunGlow);
+  for (let i = 0; i < 12; i++) {
+    const a = (i/12)*Math.PI*2;
+    const rg = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(0,0,0), new THREE.Vector3(Math.cos(a)*1.6, Math.sin(a)*1.6, 0)
+    ]);
+    const ray = new THREE.Line(rg, new THREE.LineBasicMaterial({ color:0xadd8e6, transparent:true, opacity:.22 }));
+    ray.position.copy(sunBall.position); scene.add(ray);
+  }
+
+  let drag=false, mpx=0, mpy=0;
+  let rotX=.25, rotY=.55, tRX=.25, tRY=.55;
+  let zoom=17, tZoom=17;
+  let autoSpin=true, xray=false, exploded=false;
+  let explodeT=0, clock=0;
+
+  const onDown = e => {
+    drag=true; autoSpin=false;
+    document.getElementById('bAuto').classList.remove('on');
+    mpx = e.clientX ?? (e.touches && e.touches[0].clientX);
+    mpy = e.clientY ?? (e.touches && e.touches[0].clientY);
+  };
+  const onMove = e => {
+    if (!drag) return;
+    const cx = e.clientX ?? (e.touches && e.touches[0].clientX);
+    const cy = e.clientY ?? (e.touches && e.touches[0].clientY);
+    tRY += (cx - mpx) * .009;
+    tRX += (cy - mpy) * .007;
+    tRX = Math.max(-.85, Math.min(1.25, tRX));
+    mpx = cx; mpy = cy;
+  };
+  const onUp = () => { drag = false; };
+
+  canvas.addEventListener('mousedown',  onDown);
+  canvas.addEventListener('mousemove',  onMove);
+  canvas.addEventListener('mouseup',    onUp);
+  canvas.addEventListener('mouseleave', onUp);
+  canvas.addEventListener('touchstart', onDown, { passive: true });
+  canvas.addEventListener('touchmove',  onMove, { passive: true });
+  canvas.addEventListener('touchend',   onUp);
+  canvas.addEventListener('wheel', e => {
+    tZoom += e.deltaY * .024;
+    tZoom = Math.max(6, Math.min(32, tZoom));
+  }, { passive: true });
+
+  const heroContent   = document.getElementById('heroContent');
+  const bTextToggle   = document.getElementById('bTextToggle');
+  const textToggleLbl = document.getElementById('textToggleLabel');
+  let textVisible = true;
+  bTextToggle.addEventListener('click', () => {
+    textVisible = !textVisible;
+    heroContent.classList.toggle('hidden', !textVisible);
+    bTextToggle.classList.toggle('off', !textVisible);
+    textToggleLbl.textContent = textVisible ? 'Hide Text' : 'Show Text';
+  });
+
+  const arrowState = { up:false, down:false, left:false, right:false };
+  const arrowMap = { bUp:'up', bDown:'down', bLeft:'left', bRight:'right' };
+  Object.entries(arrowMap).forEach(([id, dir]) => {
+    const btn = document.getElementById(id);
+    const startRotate = () => { arrowState[dir]=true; autoSpin=false; document.getElementById('bAuto').classList.remove('on'); };
+    const stopRotate  = () => { arrowState[dir]=false; };
+    btn.addEventListener('mousedown',  startRotate);
+    btn.addEventListener('touchstart', startRotate, { passive:true });
+    btn.addEventListener('mouseup',    stopRotate);
+    btn.addEventListener('mouseleave', stopRotate);
+    btn.addEventListener('touchend',   stopRotate);
+  });
+
+  document.getElementById('bAuto').addEventListener('click', () => {
+    autoSpin = !autoSpin;
+    document.getElementById('bAuto').classList.toggle('on', autoSpin);
+  });
+  document.getElementById('bXray').addEventListener('click', () => {
+    xray = !xray;
+    document.getElementById('bXray').classList.toggle('on', xray);
+  });
+  document.getElementById('bExplode').addEventListener('click', () => {
+    exploded = !exploded;
+    document.getElementById('bExplode').classList.toggle('on', exploded);
+  });
+  document.getElementById('bReset').addEventListener('click', () => {
+    tRX=.25; tRY=.55; tZoom=17;
+    exploded=false; xray=false; autoSpin=true;
+    document.getElementById('bAuto').classList.add('on');
+    document.getElementById('bXray').classList.remove('on');
+    document.getElementById('bExplode').classList.remove('on');
+  });
+
+  function loop() {
+    requestAnimationFrame(loop);
+    clock += .016;
+
+    if (autoSpin) tRY += .004;
+    if (arrowState.left)  { tRY -= .022; }
+    if (arrowState.right) { tRY += .022; }
+    if (arrowState.up)    { tRX -= .018; }
+    if (arrowState.down)  { tRX += .018; }
+    tRX = Math.max(-.85, Math.min(1.25, tRX));
+    rotX += (tRX - rotX) * .09;
+    rotY += (tRY - rotY) * .09;
+    zoom += (tZoom - zoom) * .09;
+
+    mainGroup.rotation.x = rotX;
+    mainGroup.rotation.y = rotY;
+    camera.position.setLength(zoom);
+
+    explodeT += (exploded ? 1 : -1) * .045;
+    explodeT = Math.max(0, Math.min(1, explodeT));
+    const et = explodeT * explodeT * (3 - 2*explodeT);
+    parts.forEach(({ obj, base, dir }) => {
+      obj.position.set(base.x + dir.x*et, base.y + dir.y*et, base.z + dir.z*et);
+    });
+
+    M.poly.opacity    = .22 - (xray ? .19 : 0);
+    M.polyEnd.opacity = .28 - (xray ? .24 : 0);
+    M.white.opacity   = xray ? .12 : 1;
+    M.white.transparent = xray;
+
+    const pp = pGeo.attributes.position.array;
+    for (let i = 0; i < PC; i++) {
+      pp[i*3]   += pVel[i].vx;
+      pp[i*3+1] += pVel[i].vy;
+      pp[i*3+2] += pVel[i].vz;
+      if (pp[i*3+1] > DH+1.1) {
+        pp[i*3]   = (Math.random()-.5)*(DL-.6);
+        pp[i*3+1] = DH+.12;
+        pp[i*3+2] = (Math.random()-.5)*(DW-.6);
+      }
+    }
+    pGeo.attributes.position.needsUpdate = true;
+
+    sunGlow.scale.setScalar(1 + Math.sin(clock*1.1)*.06);
+    fill2.intensity = .4 + Math.sin(clock*.65)*.15;
+
+    mainGroup.position.y = -1.2 + Math.sin(clock * 0.5) * 0.18;
+
+    renderer.render(scene, camera);
+  }
+
+  window.addEventListener('resize', () => {
+    renderer.setSize(W(), H());
+    camera.aspect = W() / H();
+    camera.updateProjectionMatrix();
+  });
+
+  loop();
+})();
+</script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Indo Thai Global — Solar &amp; Hybrid Drying Systems</title>
+  <meta name="description" content="Industrial-grade solar drying systems and food processing equipment. Est. 2005, Ludhiana, India."/>
+  <link rel="icon" href="assets/logo.png" type="image/png"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/home.css"/>
+</head>
+<body>
+
+<!-- ░░ NAVBAR ░░ -->
+<nav class="nav" id="nav">
+  <div class="nav-accent" aria-hidden="true"></div>
+  <div class="nav-progress" id="navProgress" aria-hidden="true"></div>
+  <div class="nav-inner">
+    <a href="home.html" class="nav-brand" aria-label="Indo Thai Global — Home">
+      <img src="assets/logo.png" alt="Indo Thai Global" class="nav-logo" draggable="false"/>
+      <div class="nav-brand-words">
+        <span class="nav-brand-name">Indo Thai Global</span>
+        <span class="nav-brand-tag">Est. 2005 &middot; India</span>
+      </div>
+    </a>
+    <div class="nav-divider" aria-hidden="true"></div>
+    <ul class="nav-links" role="list">
+      <li><a href="home.html"           class="nav-link active">Home</a></li>
+      <li><a href="products.html"       class="nav-link">Products</a></li>
+      <li><a href="infrastructure.html" class="nav-link">Infrastructure</a></li>
+      <li><a href="quality.html"        class="nav-link">Quality</a></li>
+      <li><a href="about.html"          class="nav-link">About</a></li>
+      <li><a href="gallery.html"        class="nav-link">Gallery</a></li>
+      <li><a href="contact.html"        class="nav-link">Contact</a></li>
+    </ul>
+    <!-- Language Switcher -->
+    <div class="nav-lang" id="navLang">
+      <button class="nav-lang-btn" id="langBtn" aria-label="Select language">
+        <span class="nav-lang-flag" id="langFlag">🇮🇳</span>
+        <span id="langCurrent">EN</span>
+        <span class="nav-lang-arrow">▼</span>
+      </button>
+      <div class="nav-lang-dropdown" id="langDropdown">
+        <div class="lang-search-wrap">
+          <input class="lang-search" id="langSearch" type="text" placeholder="Search language…" autocomplete="off"/>
+        </div>
+        <div class="lang-options-scroll" id="langOptionsScroll">
+        <div class="lang-group">
+          <div class="lang-group-label">🇮🇳 Indian Languages</div>
+          <button class="lang-option active" data-lang="en" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">English</span><span class="lang-option-code">EN</span></button>
+          <button class="lang-option" data-lang="hi" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">हिन्दी</span><span class="lang-option-code">HI</span></button>
+          <button class="lang-option" data-lang="pa" data-flag="🇮🇳"><span class="lang-option-flag">🇮🇳</span><span class="lang-option-name">ਪੰਜਾਬੀ</span><span class="lang-option-code">PA</span></button>
+          <button class="lang-option" data-lang="th" data-flag="🇹🇭"><span class="lang-option-flag">🇹🇭</span><span class="lang-option-name">ภาษาไทย</span><span class="lang-option-code">TH</span></button>
+          <button class="lang-option" data-lang="ar" data-flag="🇸🇦"><span class="lang-option-flag">🇸🇦</span><span class="lang-option-name">العربية</span><span class="lang-option-code">AR</span></button>
+          <button class="lang-option" data-lang="fr" data-flag="🇫🇷"><span class="lang-option-flag">🇫🇷</span><span class="lang-option-name">Français</span><span class="lang-option-code">FR</span></button>
+          <button class="lang-option" data-lang="de" data-flag="🇩🇪"><span class="lang-option-flag">🇩🇪</span><span class="lang-option-name">Deutsch</span><span class="lang-option-code">DE</span></button>
+          <button class="lang-option" data-lang="es" data-flag="🇪🇸"><span class="lang-option-flag">🇪🇸</span><span class="lang-option-name">Español</span><span class="lang-option-code">ES</span></button>
+          <button class="lang-option" data-lang="zh-CN" data-flag="🇨🇳"><span class="lang-option-flag">🇨🇳</span><span class="lang-option-name">中文</span><span class="lang-option-code">ZH</span></button>
+        </div>
+        </div>
+      </div>
+    </div>
+    <a href="#enquiry" class="nav-cta">Get a Quote <span class="cta-arrow">→</span></a>
+    <button class="nav-burger" id="burger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="drawer">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="nav-drawer" id="drawer" role="navigation" aria-label="Mobile navigation">
+  <ul class="drawer-links" role="list">
+    <li><a href="home.html"           class="drawer-link">Home           <span class="drawer-arrow">›</span></a></li>
+    <li><a href="products.html"       class="drawer-link">Products       <span class="drawer-arrow">›</span></a></li>
+    <li><a href="infrastructure.html" class="drawer-link">Infrastructure <span class="drawer-arrow">›</span></a></li>
+    <li><a href="quality.html"        class="drawer-link">Quality        <span class="drawer-arrow">›</span></a></li>
+    <li><a href="about.html"          class="drawer-link">About          <span class="drawer-arrow">›</span></a></li>
+    <li><a href="gallery.html"        class="drawer-link">Gallery        <span class="drawer-arrow">›</span></a></li>
+    <li><a href="contact.html"        class="drawer-link">Contact        <span class="drawer-arrow">›</span></a></li>
+  </ul>
+  <div class="drawer-cta-wrap">
+    <a href="#enquiry" class="drawer-cta">Get a Quote →</a>
+  </div>
+</div>
+
+
+<!-- ░░ HERO ░░ -->
+<section class="hero" aria-label="Hero">
+  <div class="hero-slides">
+    <div class="hero-slide is-active" style="background-image:url('assets/slide1.png')">
+      <div class="hero-slide-overlay"></div>
+      <div class="hero-slide-text">
+        <h1 class="hero-slide-heading">HARNESS THE SUN TO DRY NATURALLY</h1>
+        <p class="hero-slide-sub">Efficient and eco-friendly solar drying for fruits, herbs, spices, and more.</p>
+      </div>
+    </div>
+    <div class="hero-slide" style="background-image:url('assets/slide2.png')">
+      <div class="hero-slide-overlay"></div>
+      <div class="hero-slide-text">
+        <h1 class="hero-slide-heading">DRY SUSTAINABLY WITH SOLAR ENERGY</h1>
+        <p class="hero-slide-sub">Eco-friendly and cost-effective drying solutions using clean and renewable solar power.</p>
+      </div>
+    </div>
+    <div class="hero-slide" style="background-image:url('assets/slide3.png')">
+      <div class="hero-slide-overlay"></div>
+      <div class="hero-slide-text">
+        <h1 class="hero-slide-heading">EFFICIENT DRYING WITH THE POWER OF THE SUN</h1>
+        <p class="hero-slide-sub">Achieve faster, even drying while reducing your environmental impact with solar dryer technology.</p>
+      </div>
+    </div>
+    <div class="hero-slide" style="background-image:url('assets/slide4.png')">
+      <div class="hero-slide-overlay"></div>
+      <div class="hero-slide-text">
+        <h1 class="hero-slide-heading">ADVANCED SOLAR DRYERS FOR A SUSTAINABLE FUTURE</h1>
+        <p class="hero-slide-sub">Modern, reliable solar drying solutions to reduce energy costs and promote eco-friendly practices.</p>
+      </div>
+    </div>
+  </div>
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <button class="hero-slide-arrow hero-slide-prev" id="heroPrev" aria-label="Previous slide">&#8592;</button>
+  <button class="hero-slide-arrow hero-slide-next" id="heroNext" aria-label="Next slide">&#8594;</button>
+  <div class="hero-slide-dots" id="heroSlideDots"></div>
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <div class="scroll-dot"></div>
+  </div>
+</section>
+
+
+<!-- ░░ ABOUT US ░░ -->
+<section class="home-about section" id="company">
+  <div class="container">
+    <div class="home-about-grid">
+
+      <!-- Text — LEFT, slides in from left -->
+      <div class="ha-text reveal-left">
+        <div class="section-label">About Us</div>
+        <h2 class="ha-title">About Indo Thai Global</h2>
+        <div class="ha-divider"></div>
+        <p>At Indo Thai Global, we deliver advanced solar and hybrid drying solutions designed to empower farmers, food processors and industries with sustainable and cost-effective technology. Our systems harness the natural power of the sun to ensure hygienic, uniform and energy efficient drying for a wide range of agricultural products.</p>
+        <p>INDO THAI GLOBAL combines innovation with practicality, offering high-performance solar dryers that improve product quality, extend shelf life and reduce post-harvest losses. With a focus on durability, efficiency and eco-friendly practices, we provide customized solutions tailored to your specific needs. From small-scale farms to large industrial operations, we are committed to driving a cleaner, smarter and more sustainable future.</p>
+        <a href="about.html" class="btn btn-ghost" style="margin-top:1.6rem">Learn More About Us →</a>
+      </div>
+
+      <!-- Dual image stack — RIGHT, slides in from right -->
+      <div class="ha-images-stack reveal-right">
+        <div class="ha-stack-badge">
+          <span class="ha-badge-num">20+</span>
+          <span class="ha-badge-text">Years of Excellence</span>
+        </div>
+        <div class="ha-stack-img ha-stack-img--top">
+          <!-- REPLACE: assets/about-main.jpg -->
+          <img src="assets/about1.png" alt="Indo Thai Global facility"
+               onerror="this.parentElement.style.background='linear-gradient(135deg,#c8f0e4,#9dd8c8)'"/>
+          <div class="ha-stack-overlay">
+            <span class="ha-stack-label">Our Facility</span>
+          </div>
+        </div>
+        <div class="ha-stack-img ha-stack-img--bottom">
+          <!-- REPLACE: assets/about-sm1.jpg -->
+          <img src="assets/about2.png" alt="Solar drying technology"
+               onerror="this.parentElement.style.background='linear-gradient(135deg,#bee8f7,#7dcce8)'"/>
+          <div class="ha-stack-overlay">
+            <span class="ha-stack-label">Solar Drying Technology</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ░░ WHY CHOOSE US ░░ -->
+<section class="home-why section" id="why-us">
+  <div class="container">
+
+    <div class="text-center reveal-up" style="margin-bottom:3rem">
+      <div class="section-label">Why Solar Drying</div>
+      <h2 class="sec-title">Why Choose Indo Thai Global</h2>
+    </div>
+
+    <div class="why-new-grid">
+
+      <!-- Cards — LEFT -->
+      <div class="why-cards-col reveal-left">
+        <div class="why-card">
+          <div class="why-card-icon-box">&#9728;&#65039;</div>
+          <div class="why-card-body">
+            <h6>100% Renewable Solar Energy</h6>
+            <p>Zero fuel cost, zero emissions — dramatically cutting electricity bills while outperforming conventional dryers.</p>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="why-card-icon-box">&#128737;&#65039;</div>
+          <div class="why-card-body">
+            <h6>Hygienic &amp; Fully Enclosed</h6>
+            <p>Sealed drying chambers protect produce from dust, insects and rain — delivering food-safe, export-quality output.</p>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="why-card-icon-box">&#9889;</div>
+          <div class="why-card-body">
+            <h6>3&#215; Faster Than Open-Sun Drying</h6>
+            <p>Uniform solar-heated airflow cuts drying time by up to 3&#215; — saving time and reducing post-harvest losses.</p>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="why-card-icon-box">&#128142;</div>
+          <div class="why-card-body">
+            <h6>Better Colour, Nutrition &amp; Value</h6>
+            <p>Controlled temperature preserves colour, aroma and nutrition — giving products higher market value.</p>
+          </div>
+        </div>
+        <div class="why-card">
+          <div class="why-card-icon-box">&#127806;</div>
+          <div class="why-card-body">
+            <h6>20+ Years of Trusted Manufacturing</h6>
+            <p>Since 2005, serving agriculture, food processing, fisheries, herbal and spice industries across India.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image — RIGHT -->
+      <div class="why-new-img-side reveal-right">
+        <div class="why-new-img-wrap">
+          <!-- REPLACE: assets/why-choose.jpg -->
+          <img src="assets/whychoose.png" alt="Why Choose Indo Thai Global"
+               onerror="this.style.display='none';this.parentElement.classList.add('why-img-ph')"/>
+          <div class="why-ph-inner">
+            <div style="font-size:3rem">&#9728;&#65039;</div>
+            <p>Add your image here<br/><small>assets/why-choose.jpg</small></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ░░ INDUSTRIES WE SERVE ░░ -->
+<section class="home-industries section" id="industries">
+  <div class="ind-container">
+    <div class="text-center reveal-up" style="margin-bottom:2.8rem">
+      <div class="section-label">Who We Serve</div>
+      <h2 class="sec-title">Industries We Serve</h2>
+    </div>
+    <div class="ind-grid">
+
+      <div class="ind-card reveal-up" style="transition-delay:0.05s">
+        <div class="ind-icon">&#127806;</div>
+        <h4>Agriculture</h4>
+        <p>Drying of grains, pulses and produce with zero fuel cost and maximum efficiency.</p>
+        <ul class="ind-list">
+          <li>Wheat, rice, maize &amp; pulses</li>
+          <li>Fruits &amp; root vegetables</li>
+          <li>Zero fuel — sun-powered drying</li>
+          <li>Reduces post-harvest losses significantly</li>
+        </ul>
+      </div>
+
+      <div class="ind-card reveal-up" style="transition-delay:0.10s">
+        <div class="ind-icon">&#127822;</div>
+        <h4>Food Processing</h4>
+        <p>Hygienic controlled drying of fruits and vegetables, preserving colour and nutrition.</p>
+        <ul class="ind-list">
+          <li>Sliced fruits &amp; dehydrated vegetables</li>
+          <li>Colour &amp; nutrient retention</li>
+          <li>Food-safe enclosed chambers</li>
+          <li>Export-quality output assured</li>
+        </ul>
+      </div>
+
+      <div class="ind-card reveal-up" style="transition-delay:0.15s">
+        <div class="ind-icon">&#128031;</div>
+        <h4>Fisheries</h4>
+        <p>Safe drying of fish and seafood — maintaining quality for export and local markets.</p>
+        <ul class="ind-list">
+          <li>Fish, prawns &amp; seafood drying</li>
+          <li>Protected from insects &amp; dust</li>
+          <li>Longer shelf life &amp; better aroma</li>
+          <li>Suitable for coastal &amp; inland units</li>
+        </ul>
+      </div>
+
+      <div class="ind-card reveal-up" style="transition-delay:0.20s">
+        <div class="ind-icon">&#127807;</div>
+        <h4>Herbal &amp; Spice</h4>
+        <p>Gentle low-temperature drying of herbs and spices to retain essential oils and potency.</p>
+        <ul class="ind-list">
+          <li>Turmeric, chilli, coriander &amp; more</li>
+          <li>Essential oil &amp; aroma preserved</li>
+          <li>Controlled low-temp drying</li>
+          <li>Higher market grade &amp; value</li>
+        </ul>
+      </div>
+
+      <div class="ind-card reveal-up" style="transition-delay:0.25s">
+        <div class="ind-icon">&#127855;</div>
+        <h4>Honey &amp; Organic</h4>
+        <p>Moisture management for honey and organic produce — ensuring purity and shelf life.</p>
+        <ul class="ind-list">
+          <li>Honey moisture reduction</li>
+          <li>Organic produce drying</li>
+          <li>Maintains natural properties</li>
+          <li>No chemicals or additives needed</li>
+        </ul>
+      </div>
+
+      <div class="ind-card reveal-up" style="transition-delay:0.30s">
+        <div class="ind-icon">&#127981;</div>
+        <h4>Industrial Drying</h4>
+        <p>Custom solar drying for industrial-scale operations — scalable and cost-effective.</p>
+        <ul class="ind-list">
+          <li>Large-capacity custom systems</li>
+          <li>Hybrid solar + backup options</li>
+          <li>Modular &amp; expandable design</li>
+          <li>Serving factories &amp; co-operatives</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ░░ VISION & MISSION ░░ -->
+<section class="home-vm section" id="vision-mission">
+  <div class="container">
+
+    <div class="text-center reveal-up" style="margin-bottom:4rem">
+      <div class="section-label">Our Purpose</div>
+      <h2 class="sec-title">Our Vision &amp; Mission</h2>
+    </div>
+
+    <!-- ── MISSION — figure left, text right ── -->
+    <div class="vm-row">
+      <div class="vm-figure reveal-left">
+        <div class="vm-figure-ring vm-ring--mission">
+          <div class="vm-figure-emoji">&#127919;</div>
+        </div>
+        <div class="vm-figure-label">Mission</div>
+      </div>
+      <div class="vm-content reveal-right">
+        <div class="vm-tag vm-tag--mission">Our Mission</div>
+        <h3 class="vm-heading">Empowering Farmers &amp; Processors with Clean Energy</h3>
+        <p class="vm-body">Our mission is to deliver reliable, affordable and eco-friendly solar drying solutions that help farmers, food processors and agri-businesses reduce post-harvest losses, cut energy costs and improve product quality — all without harming the environment.</p>
+        <ul class="vm-points">
+          <li>Make solar drying accessible to small and large-scale agri-businesses</li>
+          <li>Reduce post-harvest losses across agriculture, fisheries and herbal sectors</li>
+          <li>Replace conventional fuel-based drying with zero-emission solar technology</li>
+          <li>Deliver consistent, food-safe and export-grade output for every customer</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── VISION — text left, figure right ── -->
+    <div class="vm-row vm-row--reverse">
+      <div class="vm-content reveal-left">
+        <div class="vm-tag vm-tag--vision">Our Vision</div>
+        <h3 class="vm-heading">A Sustainable Future Powered by the Sun</h3>
+        <p class="vm-body">We envision a world where every farm, processing unit and cooperative harnesses the power of solar energy for drying — eliminating dependency on fossil fuels, reducing carbon footprint and building a stronger, greener agri-food ecosystem across India and beyond.</p>
+        <ul class="vm-points">
+          <li>Become India's most trusted solar dryer manufacturer by 2030</li>
+          <li>Expand solar drying adoption to 10,000+ farms and food units</li>
+          <li>Pioneer hybrid and smart solar drying technologies</li>
+          <li>Support sustainable farming and food security at a national scale</li>
+        </ul>
+      </div>
+      <div class="vm-figure reveal-right">
+        <div class="vm-figure-ring vm-ring--vision">
+          <div class="vm-figure-emoji">&#127758;</div>
+        </div>
+        <div class="vm-figure-label">Vision</div>
+      </div>
+    </div>
+
+    <!-- ── VALUES — figure left, text right ── -->
+    <div class="vm-row">
+      <div class="vm-figure reveal-left">
+        <div class="vm-figure-ring vm-ring--values">
+          <div class="vm-figure-emoji">&#11088;</div>
+        </div>
+        <div class="vm-figure-label">Values</div>
+      </div>
+      <div class="vm-content reveal-right">
+        <div class="vm-tag vm-tag--values">Our Values</div>
+        <h3 class="vm-heading">The Principles That Drive Everything We Do</h3>
+        <p class="vm-body">At Indo Thai Global, our work is guided by a deep commitment to quality, sustainability and customer trust. Since 2005, these core values have shaped every product we build, every relationship we nurture and every promise we keep.</p>
+        <ul class="vm-points">
+          <li><strong>Quality First —</strong> every dryer is built to perform, last and deliver consistent results</li>
+          <li><strong>Sustainability —</strong> clean energy, zero emissions and responsible manufacturing</li>
+          <li><strong>Customer Trust —</strong> transparent pricing, reliable after-sales support and honest service</li>
+          <li><strong>Innovation —</strong> continuously improving designs to meet evolving industry needs</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ░░ ENQUIRY FORM ░░ -->
+<section class="enquiry-section" id="enquiry">
+
+  <!-- Decorative blobs -->
+  <div class="eq-blob eq-blob--1" aria-hidden="true"></div>
+  <div class="eq-blob eq-blob--2" aria-hidden="true"></div>
+
+  <div class="container eq-wrap">
+
+    <!-- LEFT — info panel -->
+    <div class="enquiry-left reveal-left">
+      <div class="section-label eq-label-light">Enquiry</div>
+      <h2 class="enquiry-title">Tell Us Your<br/>Requirement</h2>
+      <p class="enquiry-subtitle">Looking for solar dryers or custom drying solutions? Drop us your requirement and our team will get back to you within 24 hours.</p>
+
+      <div class="eq-perks">
+        <div class="eq-perk"><span class="eq-perk-icon">&#9889;</span><span>Quick 24-hr Response</span></div>
+        <div class="eq-perk"><span class="eq-perk-icon">&#127775;</span><span>Free Expert Consultation</span></div>
+        <div class="eq-perk"><span class="eq-perk-icon">&#128230;</span><span>Custom Solutions Available</span></div>
+      </div>
+
+      <div class="eq-divider"></div>
+
+      <div class="enquiry-contact-strip">
+        <div class="eq-contact-item">
+          <span class="eq-icon">&#128222;</span>
+          <span>+91 76579-44044</span>
+        </div>
+        <div class="eq-contact-item">
+          <span class="eq-icon">&#9993;&#65039;</span>
+          <span><a href="mailto:info@indothaiglobal.com">info@indothaiglobal.com</a></span>
+        </div>
+        <div class="eq-contact-item">
+          <span class="eq-icon">&#128205;</span>
+          <span>Ludhiana, Punjab, India</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT — form card -->
+    <div class="eq-form-card reveal-right">
+      <div class="eq-form-header">
+        <h3>Send Your Enquiry</h3>
+        <p>Fill in the details below — we'll reach out shortly.</p>
+      </div>
+      <form id="enquiryForm" novalidate>
+
+        <div class="form-grid-2">
+          <!-- Name -->
+          <div class="form-field">
+            <label for="eq-name">Your Name <span class="req">*</span></label>
+            <input type="text" id="eq-name" placeholder="Full name" required/>
+          </div>
+
+          <!-- Email -->
+          <div class="form-field">
+            <label for="eq-email">Email Address <span class="req">*</span></label>
+            <input type="email" id="eq-email" placeholder="you@example.com" required/>
+          </div>
+        </div>
+
+        <!-- Phone with country code -->
+        <div class="form-field">
+          <label for="eq-phone">Phone Number <span class="req">*</span></label>
+          <div class="phone-wrap">
+            <select id="eq-country" class="country-select" aria-label="Country code">
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+966">🇸🇦 +966</option>
+              <option value="+65">🇸🇬 +65</option>
+              <option value="+60">🇲🇾 +60</option>
+              <option value="+66">🇹🇭 +66</option>
+              <option value="+880">🇧🇩 +880</option>
+              <option value="+92">🇵🇰 +92</option>
+              <option value="+94">🇱🇰 +94</option>
+              <option value="+977">🇳🇵 +977</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+81">🇯🇵 +81</option>
+              <option value="+86">🇨🇳 +86</option>
+              <option value="+27">🇿🇦 +27</option>
+              <option value="+234">🇳🇬 +234</option>
+              <option value="+254">🇰🇪 +254</option>
+            </select>
+            <input type="tel" id="eq-phone" placeholder="XXXXX XXXXX" required/>
+          </div>
+        </div>
+
+        <!-- Message -->
+        <div class="form-field">
+          <label for="eq-msg">Your Requirement</label>
+          <textarea id="eq-msg" placeholder="Tell us your industry, drying capacity needed, location and any specific requirement…"></textarea>
+        </div>
+
+        <button type="submit" class="eq-submit-btn">
+          <span>Send Enquiry</span>
+          <span class="eq-btn-arrow">&#8594;</span>
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- ░░ FOOTER ░░ -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+
+    <div class="footer-col">
+      <h3 class="footer-brand">Indo Thai Global</h3>
+      <p class="footer-text">
+        Innovative solar drying solutions for agriculture and food processing industries.
+        Est. 2005, Ludhiana, India.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-title">Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="infrastructure.html">Infrastructure</a></li>
+        <li><a href="quality.html">Quality</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4 class="footer-title">Contact</h4>
+      <div class="footer-contact-item">&#128222; +91 76579-44044</div>
+      <div class="footer-contact-item">&#9993;&#65039; info@indothaiglobal.com</div>
+      <div class="footer-contact-item">&#128205; Ludhiana, Punjab, India</div>
+    </div>
+
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span class="footer-copy">&#169; 2026 Indo Thai Global &#8212; All Rights Reserved</span>
+      <div class="footer-dev-inner">
+        <span class="footer-dev-text">Designed &amp; Developed by </span>
+        <a href="https://www.linkedin.com/in/harshit-malhotra-20b333200/" target="_blank" rel="noopener noreferrer" class="footer-dev-link">Harshit Malhotra</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/navbar.js"></script>
+<script src="js/home.js"></script>
+</body>
+</html>
